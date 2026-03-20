@@ -1,0 +1,492 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Study of Shadows</title>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;0,7..72,600;0,7..72,700;1,7..72,400;1,7..72,600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#000000;color:#eceff1;font-family:'Literata',Georgia,serif;font-size:16px;line-height:1.7;min-height:100vh;min-height:calc(var(--vh,1vh)*100)}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(120,144,156,0.12) 0%,transparent 70%);pointer-events:none;z-index:0}
+.pw{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:2rem 1.5rem calc(4rem + env(safe-area-inset-bottom));padding-left:max(1.5rem,env(safe-area-inset-left));padding-right:max(1.5rem,env(safe-area-inset-right))}
+.hd{text-align:center;padding:2.5rem 0 1.5rem;margin-bottom:0.5rem}
+.ic{font-size:3rem;display:block;margin-bottom:.75rem;filter:drop-shadow(0 0 14px rgba(120,144,156,.8));animation:p 3s ease-in-out infinite}
+@keyframes p{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+h1{font-family:'Literata',Georgia,serif;font-size:clamp(1.9rem,5vw,2.9rem);font-weight:700;color:#78909c;letter-spacing:.04em;text-shadow:0 0 30px rgba(120,144,156,.5)}
+.sd{font-style:italic;color:#b0bec5;opacity:.8;font-size:13px;max-width:600px;margin:.75rem auto 0}
+.hr{width:180px;height:1px;background:linear-gradient(90deg,transparent,#78909c,transparent);margin:1.25rem auto;opacity:.5}
+.fb{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;margin-bottom:1.75rem;position:sticky;top:0;z-index:10;background:#000000;padding:.75rem 0;margin-left:-1.5rem;margin-right:-1.5rem;padding-left:1.5rem;padding-right:1.5rem;border-bottom:1px solid rgba(120,144,156,0.1);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.rf{background:rgba(255,255,255,.04);border:1px solid rgba(120,144,156,0.2);color:#eceff1;padding:.5rem .9rem;min-height:44px;border-radius:20px;cursor:pointer;font-family:'Literata',Georgia,serif;font-size:13px;transition:all .2s;letter-spacing:.02em}
+.rf:hover,.rf.active{background:var(--rc,#78909c);border-color:var(--rc,#78909c);color:#fff;box-shadow:0 0 10px rgba(120,144,156,.4)}
+.sa{border-color:#78909c;color:#78909c}
+.sa:hover,.sa.active{background:#78909c;color:#000}
+.sc{text-align:center;font-size:13px;color:#b0bec5;opacity:.45;margin-bottom:1rem;text-transform:uppercase;letter-spacing:.1em}
+.grid{display:grid;gap:1.4rem}
+.card{background:rgba(120,144,156,0.05);border:1px solid rgba(120,144,156,0.2);border-radius:8px;padding:1.5rem;position:relative;transition:transform .2s,box-shadow .2s;backdrop-filter:blur(4px)}
+.card:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(120,144,156,.18);border-color:rgba(120,144,156,.5)}
+.card.hidden{display:none}
+.ch{margin-bottom:.7rem}
+.cta{display:flex;align-items:center;gap:.65rem;flex-wrap:wrap}
+.cn{font-family:'Literata',Georgia,serif;font-size:1.25rem;font-weight:700;color:#78909c;letter-spacing:.02em}
+.rp{font-size:13px;padding:.18rem .55rem;border-radius:20px;font-weight:700;white-space:nowrap;color:#fff;opacity:.9}
+.cm{margin-bottom:.75rem}
+.mt{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem .75rem}
+.mc{display:flex;flex-direction:column;gap:.1rem}
+.ml{color:#b0bec5;opacity:.65;font-size:10px;text-transform:uppercase;letter-spacing:.1em}
+.mv{color:#eceff1;font-size:16px;font-weight:600}
+.div{height:1px;background:linear-gradient(90deg,rgba(120,144,156,0.2),transparent);margin:.7rem 0;opacity:.6}
+.cd{font-size:16px;opacity:.95}
+.sp{margin-bottom:.55rem;line-height:1.7}
+.pl{font-weight:700;color:#b0bec5;margin-right:.15rem}
+.enh{margin-top:1rem;padding:.75rem 1rem;background:rgba(120,144,156,.05);border-left:2px solid #78909c;border-radius:0 6px 6px 0;font-size:13px}
+.eh{font-family:'Literata',Georgia,serif;font-size:13px;font-weight:700;color:#78909c;letter-spacing:.04em;margin-bottom:.35rem;text-transform:uppercase}
+.ei{font-style:italic;color:#b0bec5;opacity:.7;font-size:13px;margin-bottom:.5rem;padding-bottom:.5rem;border-bottom:1px solid rgba(120,144,156,.15)}
+.el{margin-bottom:.3rem;line-height:1.65}
+.rl{font-weight:700;color:#eceff1;margin-right:.15rem}
+.sv{font-weight:700;color:#eceff1}
+.hl{box-shadow:0 0 0 2px #78909c,0 0 32px rgba(120,144,156,.6)!important;border-color:#78909c!important;animation:hlp 3s ease-out forwards}
+@keyframes hlp{0%{box-shadow:0 0 0 3px #78909c,0 0 48px rgba(120,144,156,.9)}100%{box-shadow:0 0 0 1px rgba(120,144,156,.3)}}
+.home-link{display:inline-flex;align-items:center;gap:.4rem;color:#b0bec5;font-size:13px;text-decoration:none;opacity:.55;transition:opacity .2s;letter-spacing:.04em;margin-bottom:1rem}
+.home-link:hover{opacity:1}
+.ft{text-align:center;margin-top:3rem;padding-top:1.2rem;border-top:1px solid rgba(120,144,156,0.2);font-size:13px;opacity:.28;font-style:italic}
+/* ── Floating search ─────────────────────────────────────────────────────── */
+.fsw{position:fixed;bottom:calc(1.5rem + env(safe-area-inset-bottom));right:calc(1.25rem + env(safe-area-inset-right));z-index:100;display:flex;flex-direction:column;align-items:flex-end;gap:.5rem}
+.fst{height:52px;padding:0 1.2rem;border-radius:26px;background:#78909c;border:none;color:#000;font-size:.9rem;font-family:'Literata',Georgia,serif;font-weight:700;letter-spacing:.04em;cursor:pointer;display:flex;align-items:center;gap:.5rem;box-shadow:0 4px 24px rgba(120,144,156,.55),0 2px 8px rgba(0,0,0,.4);transition:transform .2s,box-shadow .2s;flex-shrink:0;-webkit-tap-highlight-color:transparent;white-space:nowrap}
+.fst:hover{transform:scale(1.04);box-shadow:0 6px 32px rgba(120,144,156,.75),0 2px 10px rgba(0,0,0,.5)}
+.fst.open{background:#000000;border:2px solid #78909c;color:#78909c}
+.fst-ic{font-size:1.1rem;line-height:1}
+.fst-lb{font-size:.82rem}
+.fsp{display:none;flex-direction:column;width:min(340px,calc(100vw - 2.5rem));background:#13121f;border:1px solid rgba(120,144,156,.3);border-radius:14px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.7);animation:fsin .18s ease-out}
+@keyframes fsin{from{opacity:0;transform:scale(.95) translateY(6px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.fsp.open{display:flex}
+.fsi-wrap{padding:.75rem .9rem;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:.5rem}
+.fsi{flex:1;background:transparent;border:none;color:#eceff1;font-family:'Literata',Georgia,serif;font-size:16px;outline:none;min-height:36px}
+.fsi::placeholder{color:#b0bec5;opacity:.5}
+.fsc{background:transparent;border:none;color:#b0bec5;font-size:.85rem;cursor:pointer;opacity:.5;padding:.2rem;line-height:1;-webkit-tap-highlight-color:transparent}
+.fsc:hover{opacity:1}
+.fsd{max-height:min(320px,40vh);overflow-y:auto}
+.fsd::-webkit-scrollbar{width:3px}.fsd::-webkit-scrollbar-thumb{background:rgba(120,144,156,.25);border-radius:2px}
+.fsh{padding:.4rem .9rem .2rem;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#b0bec5;opacity:.5;border-top:1px solid rgba(255,255,255,.04)}
+.fsh:first-child{border-top:none}
+.fri{display:flex;align-items:center;gap:.6rem;padding:.55rem .9rem;text-decoration:none;color:#eceff1;transition:background .15s;border-bottom:1px solid rgba(255,255,255,.03);min-height:44px}
+.fri:last-child{border-bottom:none}
+.fri:hover,.fri:focus{background:rgba(120,144,156,.08);outline:none}
+.fri-ic{font-size:.95rem;flex-shrink:0}
+.fri-nm{font-size:15px;flex:1}.fri-nm mark{background:none;color:#78909c;font-style:normal}
+.fri-st{font-size:11px;color:#b0bec5;opacity:.6;white-space:nowrap}
+.fri-rk{font-size:10px;padding:.1rem .38rem;border-radius:8px;color:#fff;opacity:.85;white-space:nowrap;flex-shrink:0}
+.fnr{padding:1rem;text-align:center;font-style:italic;font-size:13px;color:#b0bec5;opacity:.55}
+@media(max-width:600px){.pw{padding:1rem 1rem 3rem}.card{padding:1.2rem}.mt{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.mt{grid-template-columns:repeat(2,1fr);gap:.4rem .5rem}.mv{font-size:14px}.cn{font-size:1.1rem}}
+@media(max-width:360px){.mt{grid-template-columns:1fr 1fr}.fb{gap:.3rem}.rf{padding:.45rem .65rem;font-size:12px}}
+</style></head><body>
+<div class="pw">
+<a href="index.html" class="home-link">← Realms of Legacy</a>
+<header class="hd"><span class="ic">◼</span><h1>Study of Shadows</h1><div class="hr"></div><p class="sd">Bend dark energies to sneak around and quickly incapacitate the weak-minded.</p></header>
+<div class="fb"><button class="rf sa active" onclick="fr(-1)">All</button><button class="rf" style="--rc:#9e9e9e" onclick="fr(0)">Rank 0</button><button class="rf" style="--rc:#4fc3f7" onclick="fr(1)">Rank 1</button><button class="rf" style="--rc:#81c784" onclick="fr(2)">Rank 2</button><button class="rf" style="--rc:#ffb74d" onclick="fr(3)">Rank 3</button><button class="rf" style="--rc:#f06292" onclick="fr(4)">Rank 4</button><button class="rf" style="--rc:#ce93d8" onclick="fr(5)">Rank 5</button></div>
+<p class="sc" id="sc">12 spells</p>
+<div class="grid" id="grid">
+<article class="card" id="feed-fear" data-rank="0">
+<div class="ch"><div class="cta"><h2 class="cn">Feed Fear</h2><span class="rp" style="background:#9e9e9e">Rank 0</span></div></div>
+<div class="cm">
+<div class="mt">
+<div class="mc"><span class="ml">Power Level</span><span class="mv">None</span></div>
+<div class="mc"><span class="ml">Range</span><span class="mv">15 ft.</span></div>
+<div class="mc"><span class="ml">Cast Time</span><span class="mv">Quick</span></div>
+<div class="mc"><span class="ml">Duration</span><span class="mv">Instant</span></div>
+<div class="mc"><span class="ml">Focus</span><span class="mv">No</span></div>
+<div class="mc"><span class="ml">Components</span><span class="mv">H</span></div>
+</div>
+</div>
+<div class="div"></div>
+<div class="cd"><p class="sp"><strong class="pl">Target:</strong> Cast on a creature you can see within range.</p><p class="sp"><strong class="pl">Effect:</strong> Until the end of your next turn, the next time the target takes Fear damage, they take an additional 2 Fear damage.</p><p class="sp"><strong class="pl">Subtle:</strong> The hand components used in the cast of this spell are incredibly subtle. Creatures watching you are unaware that you are casting a Spell unless they can cast this Spell.</p><p class="sp"><strong class="pl">Numbed Mind:</strong> A creature that has been targeted by this spell can’t be targeted by it again until the end of its next turn.</p></div>
+<div class="enh"><p class="eh">Enhanced Study</p><p class="ei">When you gain certain Ranks in this Study, you gain additional benefits.</p><p class="el"><strong class="rl">Rank 3:</strong> The next time the target takes Fear damage, they now take an additional 4 Fear damage.</p><p class="el"><strong class="rl">Rank 4:</strong> The next time the target takes Fear damage, they take an additional 6 Fear damage.</p><p class="el"><strong class="rl">Rank 5:</strong> The next time the target takes Fear damage, they take an additional 8 Fear damage.</p></div>
+</article><article class="card" id="manipulate-darkness" data-rank="0">
+<div class="ch"><div class="cta"><h2 class="cn">Manipulate Darkness</h2><span class="rp" style="background:#9e9e9e">Rank 0</span></div></div>
+<div class="cm">
+<div class="mt">
+<div class="mc"><span class="ml">Power Level</span><span class="mv">None</span></div>
+<div class="mc"><span class="ml">Range</span><span class="mv">30 ft.</span></div>
+<div class="mc"><span class="ml">Cast Time</span><span class="mv">Standard</span></div>
+<div class="mc"><span class="ml">Duration</span><span class="mv">Instant</span></div>
+<div class="mc"><span class="ml">Focus</span><span class="mv">No</span></div>
+<div class="mc"><span class="ml">Components</span><span class="mv">H, T</span></div>
+</div>
+</div>
+<div class="div"></div>
+<div class="cd"><p class="sp"><strong class="pl">Target:</strong> Upon casting, select a 5-ft. square at a point within range.</p><p class="sp"><strong class="pl">Effect:</strong> You create up to a 5-ft. cube of darkness at that point. The darkness snuffs out and blocks natural light. The darkness is destroyed by Divine Light.</p><p class="sp"><strong class="pl">Manipulate:</strong> You can use a Quick action to manipulate the darkness in the following ways: -   <strong class="sv">Move</strong> the darkness up to 30 ft. -   Have the darkness follow a creature. -   Change the shape of the darkness to look like the shadow of a creature or object. -   Materialize the darkness, or return it to its original form.</p><p class="sp"><strong class="pl">Materialized:</strong> When materialized, the darkness is a solid object with a Natural DP of 10 that weighs 5 lbs. While materialized, you cannot manipulate it until you return it to its normal darkness form.</p><p class="sp"><strong class="pl">Limitations:</strong> You can only have up to 2 casts of this Spell active at once. If you cast this Spell again while having 2 different casts active, the oldest is dispelled.</p><p class="sp"><strong class="pl">Dark Duration:</strong> The darkness lasts for 1 minute. Return to</p><p class="sp"><strong class="pl">Shadows:</strong> You can dispel the darkness at any point as a Free action.</p></div>
+<div class="enh"><p class="eh">Enhanced Study</p><p class="ei">When you gain certain Ranks in this Study, you gain additional benefits.</p><p class="el"><strong class="rl">Rank 3:</strong> The darkness you summon can now be up to a 10-ft. cube.</p><p class="el"><strong class="rl">Rank 4:</strong> You can have up to 3 casts of this Spell active at once.</p><p class="el"><strong class="rl">Rank 5:</strong> You can have up to 4 casts of this Spell active at once.</p></div>
+</article><article class="card" id="terrifying-gloom" data-rank="1">
+<div class="ch"><div class="cta"><h2 class="cn">Terrifying Gloom</h2><span class="rp" style="background:#4fc3f7">Rank 1</span></div></div>
+<div class="cm">
+<div class="mt">
+<div class="mc"><span class="ml">Power Level</span><span class="mv">None</span></div>
+<div class="mc"><span class="ml">Range</span><span class="mv">120 ft.</span></div>
+<div class="mc"><span class="ml">Cast Time</span><span class="mv">Standard</span></div>
+<div class="mc"><span class="ml">Duration</span><span class="mv">10 Min.</span></div>
+<div class="mc"><span class="ml">Focus</span><span class="mv">Yes</span></div>
+<div class="mc"><span class="ml">Components</span><span class="mv">H, T</span></div>
+</div>
+</div>
+<div class="div"></div>
+<div class="cd"><p class="sp"><strong class="pl">Shape:</strong> Upon casting, create a 15-ft.-radius sphere of Shadow Gloom centered on a point you see within range.</p><p class="sp"><strong class="pl">Shadow Gloom:</strong> Shadow Gloom is magical darkness. It consumes all natural light. Divine Light does not destroy it but does suppress it. Creatures with Nightvision cannot see through Shadow Gloom.</p><p class="sp"><strong class="pl">Terrifying:</strong> Creatures that can’t see through Shadow Gloom and start their turn within it take 3 Fear damage.</p><p class="sp"><strong class="pl">Roaming:</strong> You can use a Quick action to move the Shadow Gloom up to 15 ft. in a straight line.</p><p class="sp"><strong class="pl">Merging:</strong> If you cast this Spell or move the Shadow Gloom at least 5 ft. into a larger area of Shadow Gloom that already exists, it is sucked into the larger area and merges with it for the duration of the Spell. While merged, the whole area of Shadow Gloom gains the Terrifying property of this Spell, but you can no longer use the Roaming property.</p></div>
+
+</article><article class="card" id="fall" data-rank="1">
+<div class="ch"><div class="cta"><h2 class="cn">Fall</h2><span class="rp" style="background:#4fc3f7">Rank 1</span></div></div>
+<div class="cm">
+<div class="mt">
+<div class="mc"><span class="ml">Power Level</span><span class="mv">0</span></div>
+<div class="mc"><span class="ml">Range</span><span class="mv">60 ft.</span></div>
+<div class="mc"><span class="ml">Cast Time</span><span class="mv">Standard</span></div>
+<div class="mc"><span class="ml">Duration</span><span class="mv">Instant</span></div>
+<div class="mc"><span class="ml">Focus</span><span class="mv">No</span></div>
+<div class="mc"><span class="ml">Components</span><span class="mv">H, T</span></div>
+</div>
+</div>
+<div class="div"></div>
+<div class="cd"><p class="sp"><strong class="pl">Target:</strong> Cast on a creature you can see within range.</p><p class="sp"><strong class="pl">Spell Check:</strong> You can perform a Spell check upon casting to increase the Power Level of the Spell.</p><p class="sp"><strong class="pl">Effect:</strong> The target takes 2 Fear damage.</p><p class="sp"><strong class="pl">Skill Save:</strong> A creature damaged by this Spell makes an <strong class="sv">Insight</strong> save, penalized by a -1 modifier for every 2 Power Levels of the Spell.</p><p class="sp"><strong class="pl">Failed Save Bonus Effect:</strong> On a failed save, the target takes an additional 2 Fear damage and also falls Prone.</p></div>
+
+</article><article class="card" id="shadow-walk" data-rank="2">
+<div class="ch"><div class="cta"><h2 class="cn">Shadow Walk</h2><span class="rp" style="background:#81c784">Rank 2</span></div></div>
+<div class="cm">
+<div class="mt">
+<div class="mc"><span class="ml">Power Level</span><span class="mv">None</span></div>
+<div class="mc"><span class="ml">Range</span><span class="mv">60 ft.</span></div>
+<div class="mc"><span class="ml">Cast Time</span><span class="mv">Standard</span></div>
+<div class="mc"><span class="ml">Duration</span><span class="mv">Instant</span></div>
+<div class="mc"><span class="ml">Focus</span><span class="mv">No</span></div>
+<div class="mc"><span class="ml">Components</span><span class="mv">H, T</span></div>
+</div>
+</div>
+<div class="div"></div>
+<div class="cd"><p class="sp"><strong class="pl">Temporary Enhancement:</strong> When you cast this Spell, you gain Nightvision until the end of your next turn.</p><p class="sp"><strong class="pl">Target:</strong> After casting, select an unoccupied 5-ft. square that is in darkness within range.</p><p class="sp"><strong class="pl">Now You See Me:</strong> Dip into an area of darkness within 5 ft. and teleport to the point you selected. If you are in light with no other areas of darkness, you can dip into your own shadow. Your shadow disappears after you teleport. Now You Don’t: You gain the Hidden Condition against creatures that can’t see you in darkness.</p></div>
+
+</article><article class="card" id="terrorizing-shadows" data-rank="2">
+<div class="ch"><div class="cta"><h2 class="cn">Terrorizing Shadows</h2><span class="rp" style="background:#81c784">Rank 2</span></div></div>
+<div class="cm">
+<div class="mt">
+<div class="mc"><span class="ml">Power Level</span><span class="mv">2</span></div>
+<div class="mc"><span class="ml">Range</span><span class="mv">30 ft.</span></div>
+<div class="mc"><span class="ml">Cast Time</span><span class="mv">Standard</span></div>
+<div class="mc"><span class="ml">Duration</span><span class="mv">Instant</span></div>
+<div class="mc"><span class="ml">Focus</span><span class="mv">No</span></div>
+<div class="mc"><span class="ml">Components</span><span class="mv">H, T</span></div>
+</div>
+</div>
+<div class="div"></div>
+<div class="cd"><p class="sp"><strong class="pl">Target:</strong> Cast on a creature you can see within range.</p><p class="sp"><strong class="pl">Spell Check:</strong> You can perform a Spell check upon casting to increase the Power Level of the Spell.</p><p class="sp"><strong class="pl">Effect:</strong> The target takes 3 Fear damage.</p><p class="sp"><strong class="pl">Skill Save:</strong> Creatures that take damage from this Spell make an <strong class="sv">Insight</strong> save, penalized by a -1 modifier for every 2 Power Levels of the Spell.</p><p class="sp"><strong class="pl">Failed Save Bonus Effect:</strong> On a failed save, the target takes an additional 3 Fear damage and has their Speed reduced by 15 ft. until the end of their next turn.</p><p class="sp"><strong class="pl">Shaken Movement:</strong> If the target takes damage from this Spell, the first time they willingly move closer to you before the start of your next turn, they take 3 additional Fear damage.</p><p class="sp"><strong class="pl">Numbed Mind:</strong> A creature that takes damage from this Spell cannot be targeted by this Spell again until the end of their next turn as their mind becomes numb to the effects.</p></div>
+
+</article><article class="card" id="cloak-of-shadows" data-rank="3">
+<div class="ch"><div class="cta"><h2 class="cn">Cloak of Shadows</h2><span class="rp" style="background:#ffb74d">Rank 3</span></div></div>
+<div class="cm">
+<div class="mt">
+<div class="mc"><span class="ml">Power Level</span><span class="mv">None</span></div>
+<div class="mc"><span class="ml">Range</span><span class="mv">Self</span></div>
+<div class="mc"><span class="ml">Cast Time</span><span class="mv">Quick</span></div>
+<div class="mc"><span class="ml">Duration</span><span class="mv">1 Hour</span></div>
+<div class="mc"><span class="ml">Focus</span><span class="mv">No</span></div>
+<div class="mc"><span class="ml">Components</span><span class="mv">H, T</span></div>
+</div>
+</div>
+<div class="div"></div>
+<div class="cd"><p class="sp"><strong class="pl">Effect:</strong> You create a Cloak of Shadows on yourself for the duration of the Spell. One with</p><p class="sp"><strong class="pl">Darkness:</strong> While this Spell is active, you can use a Quick action while in darkness to become Invisible. If you enter light, attack, or cast a Spell, you lose the Invisibility. You can use a Quick action to end the Invisibility.</p></div>
+
+</article><article class="card" id="mind-reave" data-rank="3">
+<div class="ch"><div class="cta"><h2 class="cn">Mind Reave</h2><span class="rp" style="background:#ffb74d">Rank 3</span></div></div>
+<div class="cm">
+<div class="mt">
+<div class="mc"><span class="ml">Power Level</span><span class="mv">2</span></div>
+<div class="mc"><span class="ml">Range</span><span class="mv">15 ft.</span></div>
+<div class="mc"><span class="ml">Cast Time</span><span class="mv">Standard</span></div>
+<div class="mc"><span class="ml">Duration</span><span class="mv">Instant</span></div>
+<div class="mc"><span class="ml">Focus</span><span class="mv">No</span></div>
+<div class="mc"><span class="ml">Components</span><span class="mv">H, T</span></div>
+</div>
+</div>
+<div class="div"></div>
+<div class="cd"><p class="sp"><strong class="pl">Target:</strong> Cast on a creature you can see within range.</p><p class="sp"><strong class="pl">Spell Check:</strong> You can perform a Spell check upon casting to increase the Power Level of the Spell.</p><p class="sp"><strong class="pl">Effect:</strong> The target takes 4 Fear damage.</p><p class="sp"><strong class="pl">Skill Save:</strong> Creatures that take damage from this Spell make an <strong class="sv">Insight</strong> save, penalized by a -1 modifier for every 2 Power Levels of the Spell.</p><p class="sp"><strong class="pl">Failed Save Bonus Effect:</strong> On a failed save, the target takes an additional 4 Fear damage and must use a Reaction to move up to half their Speed away from you.</p><p class="sp"><strong class="pl">Failed Movement:</strong> If the target fails their save against this Spell but can’t move away from you (due to not having a Reaction or because their Speed is 0), they take an additional 4 Fear damage.</p><p class="sp"><strong class="pl">Numbed Mind:</strong> A creature that takes damage from this Spell cannot be targeted by this Spell again until the end of their next turn as their mind becomes numb to the effects.</p></div>
+
+</article><article class="card" id="consume-fears" data-rank="4">
+<div class="ch"><div class="cta"><h2 class="cn">Consume Fears</h2><span class="rp" style="background:#f06292">Rank 4</span></div></div>
+<div class="cm">
+<div class="mt">
+<div class="mc"><span class="ml">Power Level</span><span class="mv">4</span></div>
+<div class="mc"><span class="ml">Range</span><span class="mv">15 ft</span></div>
+<div class="mc"><span class="ml">Cast Time</span><span class="mv">Standard</span></div>
+<div class="mc"><span class="ml">Duration</span><span class="mv">Instant</span></div>
+<div class="mc"><span class="ml">Focus</span><span class="mv">No</span></div>
+<div class="mc"><span class="ml">Components</span><span class="mv">H, T</span></div>
+</div>
+</div>
+<div class="div"></div>
+<div class="cd"><p class="sp"><strong class="pl">Target:</strong> Cast on a creature you can see within range.</p><p class="sp"><strong class="pl">Spell Check:</strong> You can perform a Spell check upon casting to increase the Power Level of the Spell.</p><p class="sp"><strong class="pl">Effect:</strong> You thrust into the target’s mind and rip out their fears. The target takes 6 Fear damage.</p><p class="sp"><strong class="pl">Skill Save:</strong> A creature damaged by this Spell makes an <strong class="sv">Insight</strong> save, penalized by a -1 modifier for every 2 Power Levels of the Spell.</p><p class="sp"><strong class="pl">Failed Save Bonus Effect:</strong> On a failed save, the creature takes an additional 6 Fear damage. and you regain up to 24 HP.</p><p class="sp"><strong class="pl">Glutton:</strong> If you are not missing HP when you cast this Spell, the target takes an additional 6 Fear damage if they fail the save.</p><p class="sp"><strong class="pl">Numbed Mind:</strong> A creature that takes damage from this Spell cannot be targeted by this Spell again until the end of their next turn as their mind becomes numb to the effects.</p></div>
+
+</article><article class="card" id="menacing-aura" data-rank="4">
+<div class="ch"><div class="cta"><h2 class="cn">Menacing Aura</h2><span class="rp" style="background:#f06292">Rank 4</span></div></div>
+<div class="cm">
+<div class="mt">
+<div class="mc"><span class="ml">Power Level</span><span class="mv">None</span></div>
+<div class="mc"><span class="ml">Range</span><span class="mv">Self</span></div>
+<div class="mc"><span class="ml">Cast Time</span><span class="mv">Quick</span></div>
+<div class="mc"><span class="ml">Duration</span><span class="mv">1 Minute</span></div>
+<div class="mc"><span class="ml">Focus</span><span class="mv">No</span></div>
+<div class="mc"><span class="ml">Components</span><span class="mv">H, T</span></div>
+</div>
+</div>
+<div class="div"></div>
+<div class="cd"><p class="sp"><strong class="pl">Effect:</strong> Attacks against you gain a -2 modifier.</p><p class="sp"><strong class="pl">Aura:</strong> You emit a 15-ft. aura of intimidating darkness originating from yourself.</p><p class="sp"><strong class="pl">Skill Save:</strong> A creature that starts their turn within the aura or willingly moves into the aura for the first time since the start of their last turn makes an <strong class="sv">Insight</strong> save with a -2 modifier.</p><p class="sp"><strong class="pl">Failed Save Bonus Effect:</strong> On a failed save, the creature can’t willingly move closer to you and gains the Shocked Condition until the start of their next turn.</p></div>
+
+</article><article class="card" id="nightmare-s-grasp" data-rank="5">
+<div class="ch"><div class="cta"><h2 class="cn">Nightmare’s Grasp</h2><span class="rp" style="background:#ce93d8">Rank 5</span></div></div>
+<div class="cm">
+<div class="mt">
+<div class="mc"><span class="ml">Power Level</span><span class="mv">4</span></div>
+<div class="mc"><span class="ml">Range</span><span class="mv">Touch</span></div>
+<div class="mc"><span class="ml">Cast Time</span><span class="mv">Standard</span></div>
+<div class="mc"><span class="ml">Duration</span><span class="mv">Instant</span></div>
+<div class="mc"><span class="ml">Focus</span><span class="mv">No</span></div>
+<div class="mc"><span class="ml">Components</span><span class="mv">H, T</span></div>
+</div>
+</div>
+<div class="div"></div>
+<div class="cd"><p class="sp"><strong class="pl">Target:</strong> A creature in range that you can see.</p><p class="sp"><strong class="pl">Spell Check:</strong> You can perform a Spell check upon casting to increase the Power Level of the Spell.</p><p class="sp"><strong class="pl">Effect:</strong> You rattle the creature’s mind with visions of horror. They take 10 Fear damage.</p><p class="sp"><strong class="pl">Skill Save:</strong> A creature that takes damage from this Spell can make an <strong class="sv">Insight</strong> save, penalized by a -1 modifier for every 2 Power Levels of the Spell.</p><p class="sp"><strong class="pl">Absolute Terror:</strong> A creature that fails their <strong class="sv">Insight</strong> save against this Spell takes an additional 10 Fear damage (total of 20).</p><p class="sp"><strong class="pl">Jumpscare:</strong> If you are Hidden from the target when you cast this Spell, the target takes an additional 10 Fear damage if they fail the <strong class="sv">Insight</strong> save (total of 30).</p><p class="sp"><strong class="pl">Numbed Mind:</strong> A creature that takes damage from this Spell cannot be targeted by this Spell again until the end of their next turn as their mind becomes numb to the effects.</p></div>
+
+</article><article class="card" id="dark-domain" data-rank="5">
+<div class="ch"><div class="cta"><h2 class="cn">Dark Domain</h2><span class="rp" style="background:#ce93d8">Rank 5</span></div></div>
+<div class="cm">
+<div class="mt">
+<div class="mc"><span class="ml">Power Level</span><span class="mv">None</span></div>
+<div class="mc"><span class="ml">Range</span><span class="mv">Self</span></div>
+<div class="mc"><span class="ml">Cast Time</span><span class="mv">Standard</span></div>
+<div class="mc"><span class="ml">Duration</span><span class="mv">1 Minute</span></div>
+<div class="mc"><span class="ml">Focus</span><span class="mv">No</span></div>
+<div class="mc"><span class="ml">Components</span><span class="mv">H, T</span></div>
+</div>
+</div>
+<div class="div"></div>
+<div class="cd"><p class="sp"><strong class="pl">Shape:</strong> Upon casting, you create a 60-ft.-radius sphere of Shadow Gloom centered on you that wraps around corners.</p><p class="sp"><strong class="pl">Shadow Gloom:</strong> This is magical darkness. It consumes all natural light. Divine Light does not</p></div>
+
+</article>
+</div>
+<footer class="ft">Player Codex &mdash; Study of Shadows</footer>
+</div>
+<!-- Floating search widget -->
+<div class="fsw" id="fsw">
+  <div class="fsp" id="fsp">
+    <div class="fsi-wrap">
+      <input class="fsi" id="fsi" type="search" placeholder="Search all spells…" autocomplete="off" spellcheck="false">
+      <button class="fsc" id="fsc" aria-label="Clear">✕</button>
+    </div>
+    <div class="fsd" id="fsd"></div>
+  </div>
+  <button class="fst" id="fst" aria-label="Search spells"><span class="fst-ic">⚲</span><span class="fst-lb">Search</span></button>
+</div>
+<script>
+// ── Real viewport height ─────────────────────────────────────────────────────
+function setVh() {
+  document.documentElement.style.setProperty('--vh', window.innerHeight * 0.01 + 'px');
+}
+setVh();
+window.addEventListener('resize', setVh, {passive: true});
+
+// ── Rank filtering ───────────────────────────────────────────────────────────
+function fr(r) {
+  const cards = document.querySelectorAll('.card');
+  const btns  = document.querySelectorAll('.rf');
+  let v = 0;
+  cards.forEach(c => {
+    if (r === -1 || parseInt(c.dataset.rank) === r) { c.classList.remove('hidden'); v++; }
+    else c.classList.add('hidden');
+  });
+  btns.forEach(b => b.classList.remove('active'));
+  const ab = r === -1 ? document.querySelector('.sa') : btns[r + 1];
+  if (ab) ab.classList.add('active');
+  document.getElementById('sc').textContent = v + ' spell' + (v !== 1 ? 's' : '');
+}
+
+// ── Smooth-scroll polyfill ───────────────────────────────────────────────────
+function smoothScrollTo(el) {
+  if (!el) return;
+  const y = el.getBoundingClientRect().top + window.pageYOffset - window.innerHeight / 2 + el.offsetHeight / 2;
+  if ('scrollBehavior' in document.documentElement.style) {
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  } else {
+    const start = window.pageYOffset, dist = y - start, dur = 500;
+    let t0 = null;
+    function step(ts) {
+      if (!t0) t0 = ts;
+      const p = Math.min((ts - t0) / dur, 1);
+      const e = p < .5 ? 2*p*p : -1+(4-2*p)*p;
+      window.scrollTo(0, start + dist * e);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+}
+
+// ── Hash-based spell highlighting ────────────────────────────────────────────
+function highlightHash() {
+  const hash = decodeURIComponent(location.hash.slice(1));
+  if (!hash) return;
+  const el = document.getElementById(hash);
+  if (!el) return;
+  fr(-1);
+  el.classList.add('hl');
+  requestAnimationFrame(() => smoothScrollTo(el));
+  setTimeout(() => el.classList.remove('hl'), 3000);
+}
+window.addEventListener('DOMContentLoaded', highlightHash);
+window.addEventListener('hashchange', highlightHash);
+
+// ── Floating search ──────────────────────────────────────────────────────────
+const RANK_COLORS = ['#9e9e9e','#4fc3f7','#81c784','#ffb74d','#f06292','#ce93d8'];
+const THIS_FILE   = location.pathname.split('/').pop() || 'index.html';
+
+const fst = document.getElementById('fst');
+const fsp = document.getElementById('fsp');
+const fsi = document.getElementById('fsi');
+const fsd = document.getElementById('fsd');
+const fsc = document.getElementById('fsc');
+
+let isOpen    = false;
+let spellData = [];
+
+// Lazy-load the spell index once on first open
+function ensureIndex() {
+  if (spellData.length) return Promise.resolve();
+  return fetch('spells_index.json')
+    .then(r => r.json())
+    .then(d => { spellData = d; })
+    .catch(() => {});
+}
+
+function openSearch() {
+  isOpen = true;
+  fsp.classList.add('open');
+  fst.classList.add('open');
+  fst.querySelector('.fst-ic').textContent = '✕';
+  fst.querySelector('.fst-lb').textContent = 'Close';
+  fst.setAttribute('aria-label', 'Close search');
+  ensureIndex().then(() => {
+    fsi.focus();
+    positionPanel();
+  });
+}
+
+function closeSearch() {
+  isOpen = false;
+  fsp.classList.remove('open');
+  fst.classList.remove('open');
+  fst.querySelector('.fst-ic').textContent = '⚲';
+  fst.querySelector('.fst-lb').textContent = 'Search';
+  fst.setAttribute('aria-label', 'Search spells');
+  fsi.value = '';
+  fsd.innerHTML = '';
+  fsi.blur();
+}
+
+fst.addEventListener('click', () => isOpen ? closeSearch() : openSearch());
+fsc.addEventListener('click', () => { fsi.value = ''; fsd.innerHTML = ''; fsi.focus(); });
+
+// ── Panel positioning (flips up above button, avoids keyboard) ───────────────
+function positionPanel() {
+  const vv = window.visualViewport;
+  if (!vv) return;
+  const btnRect = fst.getBoundingClientRect();
+  const spaceAbove = btnRect.top - vv.offsetTop - 8;
+  fsp.style.maxHeight = Math.min(360, spaceAbove) + 'px';
+}
+
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', () => { setVh(); if (isOpen) positionPanel(); }, {passive:true});
+  window.visualViewport.addEventListener('scroll', () => { if (isOpen) positionPanel(); }, {passive:true});
+}
+
+// ── Search logic ─────────────────────────────────────────────────────────────
+function highlight(text, q) {
+  if (!q) return text;
+  return text.replace(new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi'), '<mark>$1</mark>');
+}
+
+function runSearch(raw) {
+  const q = raw.trim().toLowerCase();
+  fsd.innerHTML = '';
+  if (!q) return;
+
+  // Split: spells on this page vs other pages
+  const here  = spellData.filter(s => s.file === THIS_FILE && s.name.toLowerCase().includes(q));
+  const other = spellData.filter(s => s.file !== THIS_FILE && (s.name.toLowerCase().includes(q) || s.study.toLowerCase().includes(q))).slice(0, 10);
+
+  if (!here.length && !other.length) {
+    fsd.innerHTML = '<div class="fnr">No spells found</div>';
+    return;
+  }
+
+  let html = '';
+
+  if (here.length) {
+    html += '<div class="fsh">This study</div>';
+    here.forEach(sp => {
+      const rc = RANK_COLORS[sp.rank] || RANK_COLORS[5];
+      html += `<a class="fri" href="#${sp.slug}">
+        <span class="fri-ic">${sp.icon}</span>
+        <span class="fri-nm">${highlight(sp.name, raw)}</span>
+        <span class="fri-rk" style="background:${rc}">Rank ${sp.rank}</span>
+      </a>`;
+    });
+  }
+
+  if (other.length) {
+    html += '<div class="fsh">Other studies</div>';
+    other.forEach(sp => {
+      const rc = RANK_COLORS[sp.rank] || RANK_COLORS[5];
+      html += `<a class="fri" href="${sp.file}#${sp.slug}">
+        <span class="fri-ic">${sp.icon}</span>
+        <span class="fri-nm">${highlight(sp.name, raw)}</span>
+        <span class="fri-st" style="color:${sp.color}">${sp.study}</span>
+        <span class="fri-rk" style="background:${rc}">Rank ${sp.rank}</span>
+      </a>`;
+    });
+  }
+
+  fsd.innerHTML = html;
+
+  // Clicking a same-page result: close panel and scroll
+  fsd.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      closeSearch();
+      const id = decodeURIComponent(a.getAttribute('href').slice(1));
+      const el = document.getElementById(id);
+      if (!el) return;
+      fr(-1);
+      el.classList.add('hl');
+      requestAnimationFrame(() => smoothScrollTo(el));
+      setTimeout(() => el.classList.remove('hl'), 3000);
+    });
+  });
+}
+
+fsi.addEventListener('input', e => runSearch(e.target.value));
+
+// ── Keyboard nav inside dropdown ─────────────────────────────────────────────
+fsi.addEventListener('keydown', e => {
+  const items = [...fsd.querySelectorAll('a')];
+  if (e.key === 'ArrowDown' && items.length) { e.preventDefault(); items[0].focus(); }
+  if (e.key === 'Escape') closeSearch();
+  if (e.key === 'Enter' && items.length) items[0].click();
+});
+fsd.addEventListener('keydown', e => {
+  const items = [...fsd.querySelectorAll('a')];
+  const idx   = items.indexOf(document.activeElement);
+  if (e.key === 'ArrowDown') { e.preventDefault(); items[Math.min(idx+1, items.length-1)].focus(); }
+  if (e.key === 'ArrowUp')   { e.preventDefault(); idx > 0 ? items[idx-1].focus() : fsi.focus(); }
+  if (e.key === 'Escape')    closeSearch();
+});
+
+// ── Dismiss on outside touch / click ────────────────────────────────────────
+document.addEventListener('touchstart', e => {
+  if (isOpen && !e.target.closest('.fsw')) closeSearch();
+}, {passive: true});
+document.addEventListener('click', e => {
+  if (isOpen && !e.target.closest('.fsw')) closeSearch();
+});
+</script></body></html>
