@@ -1,0 +1,494 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Study of Contagion</title>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;0,7..72,600;0,7..72,700;1,7..72,400;1,7..72,600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#030f03;color:#e8f5e9;font-family:'Literata',Georgia,serif;font-size:16px;line-height:1.7;min-height:100vh;min-height:calc(var(--vh,1vh)*100)}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(124,179,66,0.12) 0%,transparent 70%);pointer-events:none;z-index:0}
+.pw{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:2rem 1.5rem calc(4rem + env(safe-area-inset-bottom));padding-left:max(1.5rem,env(safe-area-inset-left));padding-right:max(1.5rem,env(safe-area-inset-right))}
+.hd{text-align:center;padding:2.5rem 0 1.5rem;margin-bottom:0.5rem}
+.ic{font-size:3rem;display:block;margin-bottom:.75rem;filter:drop-shadow(0 0 14px rgba(124,179,66,.8));animation:p 3s ease-in-out infinite}
+@keyframes p{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+h1{font-family:'Literata',Georgia,serif;font-size:clamp(1.9rem,5vw,2.9rem);font-weight:700;color:#7cb342;letter-spacing:.04em;text-shadow:0 0 30px rgba(124,179,66,.5)}
+.sd{font-style:italic;color:#aed581;opacity:.8;font-size:13px;max-width:600px;margin:.75rem auto 0}
+.hr{width:180px;height:1px;background:linear-gradient(90deg,transparent,#7cb342,transparent);margin:1.25rem auto;opacity:.5}
+.fb{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;margin-bottom:1.75rem;position:sticky;top:0;z-index:10;background:#030f03;padding:.75rem 0;margin-left:-1.5rem;margin-right:-1.5rem;padding-left:1.5rem;padding-right:1.5rem;border-bottom:1px solid rgba(124,179,66,0.1);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.rf{background:rgba(255,255,255,.04);border:1px solid rgba(124,179,66,0.2);color:#e8f5e9;padding:.5rem .9rem;min-height:44px;border-radius:20px;cursor:pointer;font-family:'Literata',Georgia,serif;font-size:13px;transition:all .2s;letter-spacing:.02em}
+.rf:hover,.rf.active{background:var(--rc,#7cb342);border-color:var(--rc,#7cb342);color:#fff;box-shadow:0 0 10px rgba(124,179,66,.4)}
+.sa{border-color:#7cb342;color:#7cb342}
+.sa:hover,.sa.active{background:#7cb342;color:#000}
+.sc{text-align:center;font-size:13px;color:#aed581;opacity:.45;margin-bottom:1rem;text-transform:uppercase;letter-spacing:.1em}
+.grid{display:grid;gap:1.4rem}
+.card{background:rgba(124,179,66,0.05);border:1px solid rgba(124,179,66,0.2);border-radius:8px;padding:1.5rem;position:relative;transition:transform .2s,box-shadow .2s;backdrop-filter:blur(4px)}
+.card:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(124,179,66,.18);border-color:rgba(124,179,66,.5)}
+.card.hidden{display:none}
+.ch{margin-bottom:.7rem}
+.cta{display:flex;align-items:center;gap:.65rem;flex-wrap:wrap}
+.cn{font-family:'Literata',Georgia,serif;font-size:1.25rem;font-weight:700;color:#7cb342;letter-spacing:.02em}
+.rp{font-size:13px;padding:.18rem .55rem;border-radius:20px;font-weight:700;white-space:nowrap;color:#fff;opacity:.9}
+.cm{margin-bottom:.75rem}
+.mt{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem .75rem}
+.mc{display:flex;flex-direction:column;gap:.1rem}
+.ml{color:#aed581;opacity:.65;font-size:10px;text-transform:uppercase;letter-spacing:.1em}
+.mv{color:#e8f5e9;font-size:16px;font-weight:600}
+.div{height:1px;background:linear-gradient(90deg,rgba(124,179,66,0.2),transparent);margin:.7rem 0;opacity:.6}
+.cd{font-size:16px;opacity:.95}
+.sp{margin-bottom:.55rem;line-height:1.7}
+.pl{font-weight:700;color:#aed581;margin-right:.15rem}
+.bl{margin:.3rem 0 .55rem 1.4rem;display:flex;flex-direction:column;gap:.25rem}
+.bl li{font-size:16px;line-height:1.65;list-style:disc}
+.enh{margin-top:1rem;padding:.75rem 1rem;background:rgba(124,179,66,.05);border-left:2px solid #7cb342;border-radius:0 6px 6px 0;font-size:13px}
+.eh{font-family:'Literata',Georgia,serif;font-size:13px;font-weight:700;color:#7cb342;letter-spacing:.04em;margin-bottom:.35rem;text-transform:uppercase}
+.ei{font-style:italic;color:#aed581;opacity:.7;font-size:13px;margin-bottom:.5rem;padding-bottom:.5rem;border-bottom:1px solid rgba(124,179,66,.15)}
+.el{margin-bottom:.3rem;line-height:1.65}
+.rl{font-weight:700;color:#dcedc8;margin-right:.15rem}
+.sv{font-weight:700;color:#dcedc8}
+.hl{box-shadow:0 0 0 2px #7cb342,0 0 32px rgba(124,179,66,.6)!important;border-color:#7cb342!important;animation:hlp 3s ease-out forwards}
+@keyframes hlp{0%{box-shadow:0 0 0 3px #7cb342,0 0 48px rgba(124,179,66,.9)}100%{box-shadow:0 0 0 1px rgba(124,179,66,.3)}}
+.home-link{display:inline-flex;align-items:center;gap:.4rem;color:#aed581;font-size:13px;text-decoration:none;opacity:.55;transition:opacity .2s;letter-spacing:.04em;margin-bottom:1rem}
+.home-link:hover{opacity:1}
+.ft{text-align:center;margin-top:3rem;padding-top:1.2rem;border-top:1px solid rgba(124,179,66,0.2);font-size:13px;opacity:.28;font-style:italic}
+/* ── Floating search ─────────────────────────────────────────────────────── */
+.fsw{position:fixed;bottom:calc(1.5rem + env(safe-area-inset-bottom));right:calc(1.25rem + env(safe-area-inset-right));z-index:100;display:flex;flex-direction:column;align-items:flex-end;gap:.5rem}
+.fst{height:52px;padding:0 1.2rem;border-radius:26px;background:#7cb342;border:none;color:#000;font-size:.9rem;font-family:'Literata',Georgia,serif;font-weight:700;letter-spacing:.04em;cursor:pointer;display:flex;align-items:center;gap:.5rem;box-shadow:0 4px 24px rgba(124,179,66,.55),0 2px 8px rgba(0,0,0,.4);transition:transform .2s,box-shadow .2s;flex-shrink:0;-webkit-tap-highlight-color:transparent;white-space:nowrap}
+.fst:hover{transform:scale(1.04);box-shadow:0 6px 32px rgba(124,179,66,.75),0 2px 10px rgba(0,0,0,.5)}
+.fst.open{background:#030f03;border:2px solid #7cb342;color:#7cb342}
+.fst-ic{font-size:1.1rem;line-height:1}
+.fst-lb{font-size:.82rem}
+.fsp{display:none;flex-direction:column;width:min(340px,calc(100vw - 2.5rem));background:#13121f;border:1px solid rgba(124,179,66,.3);border-radius:14px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.7);animation:fsin .18s ease-out}
+@keyframes fsin{from{opacity:0;transform:scale(.95) translateY(6px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.fsp.open{display:flex}
+.fsi-wrap{padding:.75rem .9rem;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:.5rem}
+.fsi{flex:1;background:transparent;border:none;color:#e8f5e9;font-family:'Literata',Georgia,serif;font-size:16px;outline:none;min-height:36px}
+.fsi::placeholder{color:#aed581;opacity:.5}
+.fsc{background:transparent;border:none;color:#aed581;font-size:.85rem;cursor:pointer;opacity:.5;padding:.2rem;line-height:1;-webkit-tap-highlight-color:transparent}
+.fsc:hover{opacity:1}
+.fsd{max-height:min(320px,40vh);overflow-y:auto}
+.fsd::-webkit-scrollbar{width:3px}.fsd::-webkit-scrollbar-thumb{background:rgba(124,179,66,.25);border-radius:2px}
+.fsh{padding:.4rem .9rem .2rem;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#aed581;opacity:.5;border-top:1px solid rgba(255,255,255,.04)}
+.fsh:first-child{border-top:none}
+.fri{display:flex;align-items:center;gap:.6rem;padding:.55rem .9rem;text-decoration:none;color:#e8f5e9;transition:background .15s;border-bottom:1px solid rgba(255,255,255,.03);min-height:44px}
+.fri:last-child{border-bottom:none}
+.fri:hover,.fri:focus{background:rgba(124,179,66,.08);outline:none}
+.fri-ic{font-size:.95rem;flex-shrink:0}
+.fri-nm{font-size:15px;flex:1}.fri-nm mark{background:none;color:#7cb342;font-style:normal}
+.fri-st{font-size:11px;color:#aed581;opacity:.6;white-space:nowrap}
+.fri-rk{font-size:10px;padding:.1rem .38rem;border-radius:8px;color:#fff;opacity:.85;white-space:nowrap;flex-shrink:0}
+.fnr{padding:1rem;text-align:center;font-style:italic;font-size:13px;color:#aed581;opacity:.55}
+@media(max-width:600px){.pw{padding:1rem 1rem 3rem}.card{padding:1.2rem}.mt{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.mt{grid-template-columns:repeat(2,1fr);gap:.4rem .5rem}.mv{font-size:14px}.cn{font-size:1.1rem}}
+@media(max-width:360px){.mt{grid-template-columns:1fr 1fr}.fb{gap:.3rem}.rf{padding:.45rem .65rem;font-size:12px}}
+</style></head><body>
+<div class="pw">
+<a href="index.html" class="home-link">← Realms of Legacy</a>
+<header class="hd"><span class="ic">☣</span><h1>Study of Contagion</h1><div class="hr"></div><p class="sd">Harness the ability to inflict devastating diseases and toxic conditions upon your foes.</p></header>
+<div class="fb"><button class="rf sa active" onclick="fr(-1)">All</button><button class="rf" style="--rc:#9e9e9e" onclick="fr(0)">Rank 0</button><button class="rf" style="--rc:#4fc3f7" onclick="fr(1)">Rank 1</button><button class="rf" style="--rc:#81c784" onclick="fr(2)">Rank 2</button><button class="rf" style="--rc:#ffb74d" onclick="fr(3)">Rank 3</button><button class="rf" style="--rc:#f06292" onclick="fr(4)">Rank 4</button><button class="rf" style="--rc:#ce93d8" onclick="fr(5)">Rank 5</button></div>
+<p class="sc" id="sc">12 spells</p>
+<div class="grid" id="grid">
+<article class="card" id="acid-dart" data-rank="0">
+<div class="ch"><div class="cta"><h2 class="cn">Acid Dart</h2><span class="rp" style="background:#9e9e9e">Rank 0</span></div></div>
+<div class="cm">
+<div class="mt">
+<div class="mc"><span class="ml">Power Level</span><span class="mv">None</span></div>
+<div class="mc"><span class="ml">Range</span><span class="mv">30 ft.</span></div>
+<div class="mc"><span class="ml">Cast Time</span><span class="mv">Standard Action</span></div>
+<div class="mc"><span class="ml">Duration</span><span class="mv">Instant</span></div>
+<div class="mc"><span class="ml">Focus</span><span class="mv">No</span></div>
+<div class="mc"><span class="ml">Components</span><span class="mv">H, T</span></div>
+</div>
+</div>
+<div class="div"></div>
+<div class="cd"><p class="sp"><strong class="pl">Target:</strong> Cast on a creature within range.</p><p class="sp"><strong class="pl">Ranged Spell Attack:</strong> When you cast this Spell, make a Ranged Spell Attack against the target. This attack has a base damage of 4 Acid.</p></div>
+<div class="enh"><p class="eh">Enhanced Study</p><p class="ei">When you gain certain Ranks in this Study, you gain additional benefits.</p><p class="el"><strong class="rl">Rank 4:</strong> The base damage dealt by this Spell increases to 6.</p><p class="el"><strong class="rl">Rank 5:</strong> If this spell hits a creature’s HP, it deals 2 extra acid damage for each disease the creature is suffering from.</p></div>
+</article><article class="card" id="sicken-pulse" data-rank="0">
+<div class="ch"><div class="cta"><h2 class="cn">Sicken Pulse</h2><span class="rp" style="background:#9e9e9e">Rank 0</span></div></div>
+<div class="cm">
+<div class="mt">
+<div class="mc"><span class="ml">Power Level</span><span class="mv">None</span></div>
+<div class="mc"><span class="ml">Range</span><span class="mv">20 ft.</span></div>
+<div class="mc"><span class="ml">Cast Time</span><span class="mv">Reaction</span></div>
+<div class="mc"><span class="ml">Duration</span><span class="mv">Instant</span></div>
+<div class="mc"><span class="ml">Focus</span><span class="mv">No</span></div>
+<div class="mc"><span class="ml">Components</span><span class="mv">H, T</span></div>
+</div>
+</div>
+<div class="div"></div>
+<div class="cd"><p class="sp"><strong class="pl">Reaction:</strong> When a creature you can see within range makes a Skill save to resist a Poison or Disease, you can cast this Spell to inflict a -1 modifier on their save.</p></div>
+<div class="enh"><p class="eh">Enhanced Study</p><p class="ei">When you gain certain Ranks in this Study, you gain additional benefits.</p><p class="el"><strong class="rl">Rank 3:</strong> The range of this spell is increased to 40 feet.</p><p class="el"><strong class="rl">Rank 4:</strong> The range of this spell is increased to 60 feet.</p><p class="el"><strong class="rl">Rank 5:</strong> The range of this spell increases to 80 feet.</p></div>
+</article><article class="card" id="toxic-wave" data-rank="1">
+<div class="ch"><div class="cta"><h2 class="cn">Toxic Wave</h2><span class="rp" style="background:#4fc3f7">Rank 1</span></div></div>
+<div class="cm">
+<div class="mt">
+<div class="mc"><span class="ml">Power Level</span><span class="mv">3</span></div>
+<div class="mc"><span class="ml">Range</span><span class="mv">Self</span></div>
+<div class="mc"><span class="ml">Cast Time</span><span class="mv">Standard Action</span></div>
+<div class="mc"><span class="ml">Duration</span><span class="mv">Instant</span></div>
+<div class="mc"><span class="ml">Focus</span><span class="mv">No</span></div>
+<div class="mc"><span class="ml">Components</span><span class="mv">H, T</span></div>
+</div>
+</div>
+<div class="div"></div>
+<div class="cd"><p class="sp"><strong class="pl">Shape:</strong> Upon casting, create a 15-ft. cone of acid originating from you.</p><p class="sp"><strong class="pl">Spell Check:</strong> You can perform a Spell check upon casting to increase the Power Level of the Spell.</p><p class="sp"><strong class="pl">Effect:</strong> The target creature takes Acid damage equal to triple the Power Level of the Spell.</p><p class="sp"><strong class="pl">Skill Save:</strong> The target can make an <strong class="sv">Endure</strong> save to reduce damage.</p><p class="sp"><strong class="pl">Toxic:</strong> A creature that takes damage from this spell gains a -1 modifier on their next skill save against a Poison or Disease until the end of your next turn.</p><p class="sp"><strong class="pl">Upcast Bonus Effect:</strong> For each Rank you cast this at higher than Rank 1, <strong class="sv">Endure</strong> saves against this Spell gain a -1 modifier.</p></div>
+
+</article><article class="card" id="witherplague" data-rank="1">
+<div class="ch"><div class="cta"><h2 class="cn">Witherplague</h2><span class="rp" style="background:#4fc3f7">Rank 1</span></div></div>
+<div class="cm">
+<div class="mt">
+<div class="mc"><span class="ml">Power Level</span><span class="mv">0</span></div>
+<div class="mc"><span class="ml">Range</span><span class="mv">60 ft.</span></div>
+<div class="mc"><span class="ml">Cast Time</span><span class="mv">Standard Action</span></div>
+<div class="mc"><span class="ml">Duration</span><span class="mv">Instant</span></div>
+<div class="mc"><span class="ml">Focus</span><span class="mv">No</span></div>
+<div class="mc"><span class="ml">Components</span><span class="mv">H, T</span></div>
+</div>
+</div>
+<div class="div"></div>
+<div class="cd"><p class="sp"><strong class="pl">Target:</strong> Cast upon a creature you can see within range.</p><p class="sp"><strong class="pl">Effect:</strong> Until the end of your next turn, the target gains a -1 modifier to all melee and ranged attacks and only regains half of any HP healing from alchemy or magic.</p><p class="sp"><strong class="pl">Spell Check:</strong> You can perform a Spell check upon casting to increase the Power Level of the Spell.</p><p class="sp"><strong class="pl">Skill Save:</strong> A creature targeted by this Spell must make an <strong class="sv">Endure</strong> save, penalized by a -1 modifier for every 2 Power Levels of the Spell.</p><p class="sp"><strong class="pl">Failed Save Bonus Effect:</strong> On a failed save, the target instead gains the Witherplauge Disease for 5 Minutes.</p><p class="sp"><strong class="pl">Witherplague:</strong> A creature infected with this disease gains a -1 modifier to all melee and ranged attacks and only regains half of any HP healing from alchemy or magic. If the creature is also suffering from the Poisoned condition while under this effect, then they can’t regain any HP outside of Intermissions and Rests while infected by this disease. Shake it</p><p class="sp"><strong class="pl">Off:</strong> A creature that has been inflicted with the Witherplague disease from this Spell can use a Standard Action to repeat the <strong class="sv">Endure</strong> save against this spell. On a success, the creature cleanses the Shimmer disease early.</p><p class="sp"><strong class="pl">Construct Immunity:</strong> This Spell cannot affect a Construct.</p></div>
+
+</article><article class="card" id="blindblight" data-rank="2">
+<div class="ch"><div class="cta"><h2 class="cn">Blindblight</h2><span class="rp" style="background:#81c784">Rank 2</span></div></div>
+<div class="cm">
+<div class="mt">
+<div class="mc"><span class="ml">Power Level</span><span class="mv">2</span></div>
+<div class="mc"><span class="ml">Range</span><span class="mv">60 ft.</span></div>
+<div class="mc"><span class="ml">Cast Time</span><span class="mv">Standard Action</span></div>
+<div class="mc"><span class="ml">Duration</span><span class="mv">Instant</span></div>
+<div class="mc"><span class="ml">Focus</span><span class="mv">No</span></div>
+<div class="mc"><span class="ml">Components</span><span class="mv">H, T</span></div>
+</div>
+</div>
+<div class="div"></div>
+<div class="cd"><p class="sp"><strong class="pl">Target:</strong> Cast upon a creature you can see within range.</p><p class="sp"><strong class="pl">Spell Check:</strong> You can perform a Spell check upon casting to increase the Power Level of the Spell.</p><p class="sp"><strong class="pl">Effect:</strong> Until the end of your next turn, the target gains a -2 modifier on all melee and ranged attacks and their ranges on attacks, spells, and abilities are halved.</p><p class="sp"><strong class="pl">Skill Save:</strong> A creature targeted by this Spell must make an <strong class="sv">Endure</strong> save, penalized by a -1 modifier for every 2 Power Levels of the Spell.</p><p class="sp"><strong class="pl">Failed Save Bonus Effect:</strong> On a failed save, the target instead gains the Blindblight Disease for 5 minutes.</p><p class="sp"><strong class="pl">Blindblight:</strong> This Disease weakens the eyes. A creature infected by this Disease gains a -2 modifier on all melee and ranged attacks, any vision ranges are reduced by half, and any ranged attack or spell ranges are reduced by half. Spell ranges of 5 feet are reduced to a Touch range. Shake it</p><p class="sp"><strong class="pl">Off:</strong> A creature infected by this Spell can use a Standard Action to repeat the <strong class="sv">Endure</strong> save against the disease. On a success, the creature cleanses the disease early.</p><p class="sp"><strong class="pl">Infection:</strong> If this spell lasts the full duration, the disease fully infects the target lasting for 30 days and treated as a normal disease. Shake it Off can’t be used against this anymore.</p><p class="sp"><strong class="pl">Construct Immunity:</strong> This Spell cannot affect a Construct.</p></div>
+
+</article><article class="card" id="proliferate" data-rank="2">
+<div class="ch"><div class="cta"><h2 class="cn">Proliferate</h2><span class="rp" style="background:#81c784">Rank 2</span></div></div>
+<div class="cm">
+<div class="mt">
+<div class="mc"><span class="ml">Power Level</span><span class="mv">2</span></div>
+<div class="mc"><span class="ml">Range</span><span class="mv">60 ft.</span></div>
+<div class="mc"><span class="ml">Cast Time</span><span class="mv">Standard Action</span></div>
+<div class="mc"><span class="ml">Duration</span><span class="mv">Instant</span></div>
+<div class="mc"><span class="ml">Focus</span><span class="mv">No</span></div>
+<div class="mc"><span class="ml">Components</span><span class="mv">H, T</span></div>
+</div>
+</div>
+<div class="div"></div>
+<div class="cd"><p class="sp"><strong class="pl">Target:</strong> Cast on a creature that is suffering from the Shimmer Disease.</p><p class="sp"><strong class="pl">Spell Check:</strong> You can perform a Spell check upon casting to increase the Power Level of the Spell.</p><p class="sp"><strong class="pl">Effect:</strong> You attempt to spread the Witherplague disease to nearby creatures. Choose up to three other creatures within 15 feet of the target that you can see. Each chosen creature must make a skill save as if they had been targeted by a cast of the Witherplague Spell. You will use this spell’s Power Level for calculating the negative modifier any of their saves would gain.</p><p class="sp"><strong class="pl">Upcast Bonus Effect:</strong> You may upcast this spell to choose a different disease from another spell in this study to spread. You must upcast this spell one rank higher than the chosen disease’s spell rank to spread it. You can’t spread diseases outside of this study.</p></div>
+
+</article><article class="card" id="feral-pox" data-rank="3">
+<div class="ch"><div class="cta"><h2 class="cn">Feral Pox</h2><span class="rp" style="background:#ffb74d">Rank 3</span></div></div>
+<div class="cm">
+<div class="mt">
+<div class="mc"><span class="ml">Power Level</span><span class="mv">2</span></div>
+<div class="mc"><span class="ml">Range</span><span class="mv">60 ft.</span></div>
+<div class="mc"><span class="ml">Cast Time</span><span class="mv">Standard Action</span></div>
+<div class="mc"><span class="ml">Duration</span><span class="mv">Instant</span></div>
+<div class="mc"><span class="ml">Focus</span><span class="mv">No</span></div>
+<div class="mc"><span class="ml">Components</span><span class="mv">H, T</span></div>
+</div>
+</div>
+<div class="div"></div>
+<div class="cd"><p class="sp"><strong class="pl">Target:</strong> Cast upon a creature you can see within range.</p><p class="sp"><strong class="pl">Spell Check:</strong> You can perform a Spell check upon casting to increase the Power Level of the Spell.</p><p class="sp"><strong class="pl">Effect:</strong> Until the end of your next turn, the target has the Enraged Condition.</p><p class="sp"><strong class="pl">Skill Save:</strong> A creature targeted by this Spell must make an <strong class="sv">Endure</strong> save, penalized by a -1 modifier for every 2 Power Levels of the Spell.</p><p class="sp"><strong class="pl">Failed Save Bonus Effect:</strong> On a failed save, the target also gains the Feral Pox Disease for 5 minutes.</p><p class="sp"><strong class="pl">Feral Pox:</strong> When a creature infected by this disease takes physical damage, they gain the Enraged Condition until the end of their next turn. Shake it</p><p class="sp"><strong class="pl">Off:</strong> A creature that has been inflicted with the Feral Pox Disease from this Spell can use a Standard Action to repeat the <strong class="sv">Endure</strong> save against this spell. On a success, the creature cleanses the Feral Pox Disease early.</p><p class="sp"><strong class="pl">Construct Immunity:</strong> This Spell cannot affect a Construct.</p></div>
+
+</article><article class="card" id="eroding-sludge" data-rank="3">
+<div class="ch"><div class="cta"><h2 class="cn">Eroding Sludge</h2><span class="rp" style="background:#ffb74d">Rank 3</span></div></div>
+<div class="cm">
+<div class="mt">
+<div class="mc"><span class="ml">Power Level</span><span class="mv">6</span></div>
+<div class="mc"><span class="ml">Range</span><span class="mv">60 ft.</span></div>
+<div class="mc"><span class="ml">Cast Time</span><span class="mv">Standard Action</span></div>
+<div class="mc"><span class="ml">Duration</span><span class="mv">1 Minute</span></div>
+<div class="mc"><span class="ml">Focus</span><span class="mv">Yes</span></div>
+<div class="mc"><span class="ml">Components</span><span class="mv">H, T</span></div>
+</div>
+</div>
+<div class="div"></div>
+<div class="cd"><p class="sp"><strong class="pl">Shape:</strong> You create a 15-ft.-radius sphere of energy at a point you can see within range that covers all surfaces within it with dark brown sludge.</p><p class="sp"><strong class="pl">Spell Check:</strong> You can perform a Spell check upon casting to increase the Power Level of the Spell.</p><p class="sp"><strong class="pl">Effect:</strong> All surfaces in the sphere become covered in Corrosive Sludge for the duration of the Spell.</p><p class="sp"><strong class="pl">Corrosive Sludge:</strong> Each surface covered in this sludge is considered a difficult surface. When a creature starts their turn in the sludge or is moved into it for the first time since the end of their last turn, they take Acid damage equal to triple the Power Level of the Spell.</p><p class="sp"><strong class="pl">Skill Save:</strong> Creatures that take damage from this Spell can make a <strong class="sv">Move</strong> save to reduce the damage.</p><p class="sp"><strong class="pl">Corrosive:</strong> If a creature’s DP would take damage from this Spell, they take 6 extra acid damage.</p><p class="sp"><strong class="pl">Not Permanent:</strong> When the Spell ends, all surfaces covered in sludge revert back to their normal condition.</p></div>
+
+</article><article class="card" id="mindflare" data-rank="4">
+<div class="ch"><div class="cta"><h2 class="cn">Mindflare</h2><span class="rp" style="background:#f06292">Rank 4</span></div></div>
+<div class="cm">
+<div class="mt">
+<div class="mc"><span class="ml">Power Level</span><span class="mv">4</span></div>
+<div class="mc"><span class="ml">Range</span><span class="mv">60 ft.</span></div>
+<div class="mc"><span class="ml">Cast Time</span><span class="mv">Standard Action</span></div>
+<div class="mc"><span class="ml">Duration</span><span class="mv">Instant</span></div>
+<div class="mc"><span class="ml">Focus</span><span class="mv">No</span></div>
+<div class="mc"><span class="ml">Components</span><span class="mv">H, T</span></div>
+</div>
+</div>
+<div class="div"></div>
+<div class="cd"><p class="sp"><strong class="pl">Target:</strong> Cast upon a creature you can see within range.</p><p class="sp"><strong class="pl">Spell Check:</strong> You can perform a Spell check upon casting to increase the Power Level of the Spell.</p><p class="sp"><strong class="pl">Effect:</strong> Until the end of your next turn, the target gains a -2 modifier on all spell checks.</p><p class="sp"><strong class="pl">Skill Save:</strong> A creature targeted by this Spell must make an <strong class="sv">Endure</strong> save, penalized by a -1 modifier for every 2 Power Levels of the Spell.</p><p class="sp"><strong class="pl">Failed Save Bonus Effect:</strong> On a failed save, the target instead gains the Mindflare Disease for 5 minutes.</p><p class="sp"><strong class="pl">Mindflare:</strong> A creature infected by this gains a -2 modifier on all spell checks. When the creature casts a spell or starts their turn focusing on a spell, they must spend additional sorce points equal to double the rank of the spell. Shake it</p><p class="sp"><strong class="pl">Off:</strong> A creature that has been inflicted with the Mindflare disease from this Spell can use a Standard Action to repeat the <strong class="sv">Endure</strong> save against this spell. On a success, the creature cleanses the Mindflare Disease early.</p><p class="sp"><strong class="pl">Construct Immunity:</strong> This Spell cannot affect a Construct.</p></div>
+
+</article><article class="card" id="stonefever" data-rank="4">
+<div class="ch"><div class="cta"><h2 class="cn">Stonefever</h2><span class="rp" style="background:#f06292">Rank 4</span></div></div>
+<div class="cm">
+<div class="mt">
+<div class="mc"><span class="ml">Power Level</span><span class="mv">4</span></div>
+<div class="mc"><span class="ml">Range</span><span class="mv">60 ft.</span></div>
+<div class="mc"><span class="ml">Cast Time</span><span class="mv">Standard Action</span></div>
+<div class="mc"><span class="ml">Duration</span><span class="mv">Instant</span></div>
+<div class="mc"><span class="ml">Focus</span><span class="mv">No</span></div>
+<div class="mc"><span class="ml">Components</span><span class="mv">H, T</span></div>
+</div>
+</div>
+<div class="div"></div>
+<div class="cd"><p class="sp"><strong class="pl">Target:</strong> Cast upon a creature you can see within range.</p><p class="sp"><strong class="pl">Spell Check:</strong> You can perform a Spell check upon casting to increase the Power Level of the Spell.</p><p class="sp"><strong class="pl">Effect:</strong> Until the end of your next turn, the target has their Speed reduced by half and can only perform one action on their turns.</p><p class="sp"><strong class="pl">Skill Save:</strong> A creature targeted by this Spell must make an <strong class="sv">Endure</strong> save, penalized by a -1 modifier for every 2 Power Levels of the Spell.</p><p class="sp"><strong class="pl">Failed Save Bonus Effect:</strong> On a failed save, the target instead gains the Stonefever disease instead for 5 minutes.</p><p class="sp"><strong class="pl">Stonefever Disease:</strong> A creature infected by this disease has their Speed reduced by half, can only perform one action on their turn, and gains a -2 modifier on all Agility checks.</p><p class="sp"><strong class="pl">Shake Off:</strong> A creature that has been inflicted with the Stonefever Disease from this Spell can use a Standard Action to repeat the <strong class="sv">Endure</strong> save against this spell. On a success, the creature cleanses the disease early.</p><p class="sp"><strong class="pl">Growing Pain:</strong> If a creature has been infected by Stonefever for longer than 1 minute, they become Petrified for the remaining duration of the Spell.</p><p class="sp"><strong class="pl">Petrified:</strong> The creature’s skin becomes stone. They cannot move, talk, or perform any actions outside of Shake Off. Their HP gains resistance to physical damage from weapons that lack the penetrate feature. The creature remains Petrified until the Disease is cleansed. An Elixir can still be fed to a Petrified creature.</p><p class="sp"><strong class="pl">Construct Immunity:</strong> This Spell cannot affect a Construct.</p></div>
+
+</article><article class="card" id="plague-requiem" data-rank="5">
+<div class="ch"><div class="cta"><h2 class="cn">Plague Requiem</h2><span class="rp" style="background:#ce93d8">Rank 5</span></div></div>
+<div class="cm">
+<div class="mt">
+<div class="mc"><span class="ml">Power Level</span><span class="mv">4</span></div>
+<div class="mc"><span class="ml">Range</span><span class="mv">Self</span></div>
+<div class="mc"><span class="ml">Cast Time</span><span class="mv">Standard Action</span></div>
+<div class="mc"><span class="ml">Duration</span><span class="mv">Instant</span></div>
+<div class="mc"><span class="ml">Focus</span><span class="mv">No</span></div>
+<div class="mc"><span class="ml">Components</span><span class="mv">H, T</span></div>
+</div>
+</div>
+<div class="div"></div>
+<div class="cd"><p class="sp"><strong class="pl">Target:</strong> This targets all creatures suffering from a disease within 60 feet of you.</p><p class="sp"><strong class="pl">Spell Check:</strong> You can perform a Spell check upon casting to increase the Power Level of the Spell.</p><p class="sp"><strong class="pl">Effect:</strong> If the target is not Bloodied when this Spell is cast, their HP takes 10 acid damage, ignoring DP. If the target is Bloodied when this Spell is cast, they gain an additional -2 modifier on their first <strong class="sv">Endure</strong> save against this Spell.</p><p class="sp"><strong class="pl">Boosted Immunity:</strong> A creature that has taken damage from this spell can’t be targeted by this spell again until the start of the caster’s next turn.</p><p class="sp"><strong class="pl">Skill Save:</strong> A creature targeted by this Spell must make an <strong class="sv">Endure</strong> save, penalized by a -1 modifier for every 2 Power Levels of the Spell.</p><p class="sp"><strong class="pl">Failed Save Bonus Effect:</strong> On a failed save, the target is instead cleansed of each disease affecting them. For each disease that a creature was cleansed of, their HP takes 20 acid damage, ignoring DP. If the target takes acid damage from this spell, it also can’t regain HP until the end of your next turn.</p><p class="sp"><strong class="pl">Construct Immunity:</strong> This Spell cannot affect a Construct.</p></div>
+
+</article><article class="card" id="bone-rot" data-rank="5">
+<div class="ch"><div class="cta"><h2 class="cn">Bone Rot</h2><span class="rp" style="background:#ce93d8">Rank 5</span></div></div>
+<div class="cm">
+<div class="mt">
+<div class="mc"><span class="ml">Power Level</span><span class="mv">4</span></div>
+<div class="mc"><span class="ml">Range</span><span class="mv">60 ft.</span></div>
+<div class="mc"><span class="ml">Cast Time</span><span class="mv">Standard Action</span></div>
+<div class="mc"><span class="ml">Duration</span><span class="mv">Instant</span></div>
+<div class="mc"><span class="ml">Focus</span><span class="mv">No</span></div>
+<div class="mc"><span class="ml">Components</span><span class="mv">H, T</span></div>
+</div>
+</div>
+<div class="div"></div>
+<div class="cd"><p class="sp"><strong class="pl">Target:</strong> Cast upon a creature you can see within range.</p><p class="sp"><strong class="pl">Spell Check:</strong> You can perform a Spell check upon casting to increase the Power Level of the Spell.</p><p class="sp"><strong class="pl">Effect:</strong> Until the end of your next turn, whenever the target takes slash, pierce, or blunt damage they take an additional 12 Force damage.</p><p class="sp"><strong class="pl">Skill Save:</strong> A creature targeted by this Spell must make an <strong class="sv">Endure</strong> save, penalized by a -1 modifier for every 2 Power Levels of the Spell.</p><p class="sp"><strong class="pl">Failed Save Bonus Effect:</strong> On a failed save, the target instead gains the Bone Rot Disease for 5 minutes.</p><p class="sp"><strong class="pl">Bone Rot:</strong> whenever a creature infected with this disease takes slash, pierce, or blunt damage they take an additional 12 Force damage.</p><p class="sp"><strong class="pl">Shake Off:</strong> A creature that has been inflicted with the Bone Rot Disease from this Spell can use a Standard Action to repeat the <strong class="sv">Endure</strong> save against this spell. On a success, the creature cleanses the Bone Rot Disease early.</p><p class="sp"><strong class="pl">Construct Immunity:</strong> This Spell cannot affect a Construct.</p></div>
+
+</article>
+</div>
+<footer class="ft">Player Codex &mdash; Study of Contagion</footer>
+</div>
+<!-- Floating search widget -->
+<div class="fsw" id="fsw">
+  <div class="fsp" id="fsp">
+    <div class="fsi-wrap">
+      <input class="fsi" id="fsi" type="search" placeholder="Search all spells…" autocomplete="off" spellcheck="false">
+      <button class="fsc" id="fsc" aria-label="Clear">✕</button>
+    </div>
+    <div class="fsd" id="fsd"></div>
+  </div>
+  <button class="fst" id="fst" aria-label="Search spells"><span class="fst-ic">⚲</span><span class="fst-lb">Search</span></button>
+</div>
+<script>
+// ── Real viewport height ─────────────────────────────────────────────────────
+function setVh() {
+  document.documentElement.style.setProperty('--vh', window.innerHeight * 0.01 + 'px');
+}
+setVh();
+window.addEventListener('resize', setVh, {passive: true});
+
+// ── Rank filtering ───────────────────────────────────────────────────────────
+function fr(r) {
+  const cards = document.querySelectorAll('.card');
+  const btns  = document.querySelectorAll('.rf');
+  let v = 0;
+  cards.forEach(c => {
+    if (r === -1 || parseInt(c.dataset.rank) === r) { c.classList.remove('hidden'); v++; }
+    else c.classList.add('hidden');
+  });
+  btns.forEach(b => b.classList.remove('active'));
+  const ab = r === -1 ? document.querySelector('.sa') : btns[r + 1];
+  if (ab) ab.classList.add('active');
+  document.getElementById('sc').textContent = v + ' spell' + (v !== 1 ? 's' : '');
+}
+
+// ── Smooth-scroll polyfill ───────────────────────────────────────────────────
+function smoothScrollTo(el) {
+  if (!el) return;
+  const y = el.getBoundingClientRect().top + window.pageYOffset - window.innerHeight / 2 + el.offsetHeight / 2;
+  if ('scrollBehavior' in document.documentElement.style) {
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  } else {
+    const start = window.pageYOffset, dist = y - start, dur = 500;
+    let t0 = null;
+    function step(ts) {
+      if (!t0) t0 = ts;
+      const p = Math.min((ts - t0) / dur, 1);
+      const e = p < .5 ? 2*p*p : -1+(4-2*p)*p;
+      window.scrollTo(0, start + dist * e);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+}
+
+// ── Hash-based spell highlighting ────────────────────────────────────────────
+function highlightHash() {
+  const hash = decodeURIComponent(location.hash.slice(1));
+  if (!hash) return;
+  const el = document.getElementById(hash);
+  if (!el) return;
+  fr(-1);
+  el.classList.add('hl');
+  requestAnimationFrame(() => smoothScrollTo(el));
+  setTimeout(() => el.classList.remove('hl'), 3000);
+}
+window.addEventListener('DOMContentLoaded', highlightHash);
+window.addEventListener('hashchange', highlightHash);
+
+// ── Floating search ──────────────────────────────────────────────────────────
+const RANK_COLORS = ['#9e9e9e','#4fc3f7','#81c784','#ffb74d','#f06292','#ce93d8'];
+const THIS_FILE   = location.pathname.split('/').pop() || 'index.html';
+
+const fst = document.getElementById('fst');
+const fsp = document.getElementById('fsp');
+const fsi = document.getElementById('fsi');
+const fsd = document.getElementById('fsd');
+const fsc = document.getElementById('fsc');
+
+let isOpen    = false;
+let spellData = [];
+
+// Lazy-load the spell index once on first open
+function ensureIndex() {
+  if (spellData.length) return Promise.resolve();
+  return fetch('spells_index.json')
+    .then(r => r.json())
+    .then(d => { spellData = d; })
+    .catch(() => {});
+}
+
+function openSearch() {
+  isOpen = true;
+  fsp.classList.add('open');
+  fst.classList.add('open');
+  fst.querySelector('.fst-ic').textContent = '✕';
+  fst.querySelector('.fst-lb').textContent = 'Close';
+  fst.setAttribute('aria-label', 'Close search');
+  ensureIndex().then(() => {
+    fsi.focus();
+    positionPanel();
+  });
+}
+
+function closeSearch() {
+  isOpen = false;
+  fsp.classList.remove('open');
+  fst.classList.remove('open');
+  fst.querySelector('.fst-ic').textContent = '⚲';
+  fst.querySelector('.fst-lb').textContent = 'Search';
+  fst.setAttribute('aria-label', 'Search spells');
+  fsi.value = '';
+  fsd.innerHTML = '';
+  fsi.blur();
+}
+
+fst.addEventListener('click', () => isOpen ? closeSearch() : openSearch());
+fsc.addEventListener('click', () => { fsi.value = ''; fsd.innerHTML = ''; fsi.focus(); });
+
+// ── Panel positioning (flips up above button, avoids keyboard) ───────────────
+function positionPanel() {
+  const vv = window.visualViewport;
+  if (!vv) return;
+  const btnRect = fst.getBoundingClientRect();
+  const spaceAbove = btnRect.top - vv.offsetTop - 8;
+  fsp.style.maxHeight = Math.min(360, spaceAbove) + 'px';
+}
+
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', () => { setVh(); if (isOpen) positionPanel(); }, {passive:true});
+  window.visualViewport.addEventListener('scroll', () => { if (isOpen) positionPanel(); }, {passive:true});
+}
+
+// ── Search logic ─────────────────────────────────────────────────────────────
+function highlight(text, q) {
+  if (!q) return text;
+  return text.replace(new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi'), '<mark>$1</mark>');
+}
+
+function runSearch(raw) {
+  const q = raw.trim().toLowerCase();
+  fsd.innerHTML = '';
+  if (!q) return;
+
+  // Split: spells on this page vs other pages
+  const here  = spellData.filter(s => s.file === THIS_FILE && s.name.toLowerCase().includes(q));
+  const other = spellData.filter(s => s.file !== THIS_FILE && (s.name.toLowerCase().includes(q) || s.study.toLowerCase().includes(q))).slice(0, 10);
+
+  if (!here.length && !other.length) {
+    fsd.innerHTML = '<div class="fnr">No spells found</div>';
+    return;
+  }
+
+  let html = '';
+
+  if (here.length) {
+    html += '<div class="fsh">This study</div>';
+    here.forEach(sp => {
+      const rc = RANK_COLORS[sp.rank] || RANK_COLORS[5];
+      html += `<a class="fri" href="#${sp.slug}">
+        <span class="fri-ic">${sp.icon}</span>
+        <span class="fri-nm">${highlight(sp.name, raw)}</span>
+        <span class="fri-rk" style="background:${rc}">Rank ${sp.rank}</span>
+      </a>`;
+    });
+  }
+
+  if (other.length) {
+    html += '<div class="fsh">Other studies</div>';
+    other.forEach(sp => {
+      const rc = RANK_COLORS[sp.rank] || RANK_COLORS[5];
+      html += `<a class="fri" href="${sp.file}#${sp.slug}">
+        <span class="fri-ic">${sp.icon}</span>
+        <span class="fri-nm">${highlight(sp.name, raw)}</span>
+        <span class="fri-st" style="color:${sp.color}">${sp.study}</span>
+        <span class="fri-rk" style="background:${rc}">Rank ${sp.rank}</span>
+      </a>`;
+    });
+  }
+
+  fsd.innerHTML = html;
+
+  // Clicking a same-page result: close panel and scroll
+  fsd.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      closeSearch();
+      const id = decodeURIComponent(a.getAttribute('href').slice(1));
+      const el = document.getElementById(id);
+      if (!el) return;
+      fr(-1);
+      el.classList.add('hl');
+      requestAnimationFrame(() => smoothScrollTo(el));
+      setTimeout(() => el.classList.remove('hl'), 3000);
+    });
+  });
+}
+
+fsi.addEventListener('input', e => runSearch(e.target.value));
+
+// ── Keyboard nav inside dropdown ─────────────────────────────────────────────
+fsi.addEventListener('keydown', e => {
+  const items = [...fsd.querySelectorAll('a')];
+  if (e.key === 'ArrowDown' && items.length) { e.preventDefault(); items[0].focus(); }
+  if (e.key === 'Escape') closeSearch();
+  if (e.key === 'Enter' && items.length) items[0].click();
+});
+fsd.addEventListener('keydown', e => {
+  const items = [...fsd.querySelectorAll('a')];
+  const idx   = items.indexOf(document.activeElement);
+  if (e.key === 'ArrowDown') { e.preventDefault(); items[Math.min(idx+1, items.length-1)].focus(); }
+  if (e.key === 'ArrowUp')   { e.preventDefault(); idx > 0 ? items[idx-1].focus() : fsi.focus(); }
+  if (e.key === 'Escape')    closeSearch();
+});
+
+// ── Dismiss on outside touch / click ────────────────────────────────────────
+document.addEventListener('touchstart', e => {
+  if (isOpen && !e.target.closest('.fsw')) closeSearch();
+}, {passive: true});
+document.addEventListener('click', e => {
+  if (isOpen && !e.target.closest('.fsw')) closeSearch();
+});
+</script></body></html>

@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Realms of Legacy — Studies of Sorcery</title>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;0,7..72,600;0,7..72,700;1,7..72,400;1,7..72,600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #080810;
+  --bg2: #0d0d1a;
+  --surface: rgba(255,255,255,0.03);
+  --border: rgba(255,255,255,0.08);
+  --text: #d4c9f0;
+  --muted: #8a80a8;
+  --gold: #c9a84c;
+  --gold2: #f0d080;
+  --gold-glow: 201,168,76;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Literata', Georgia, serif;
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
+  overflow-x: hidden;
+}
+
+/* ── Starfield background ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 120% 60% at 50% -10%, rgba(80,40,160,0.25) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(201,168,76,0.07) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Decorative rune lines */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 50%; transform: translateX(-50%);
+  width: 1px;
+  height: 100vh;
+  background: linear-gradient(to bottom, transparent, rgba(201,168,76,0.15) 20%, rgba(201,168,76,0.05) 80%, transparent);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 max(1.5rem, env(safe-area-inset-left)) calc(5rem + env(safe-area-inset-bottom)) max(1.5rem, env(safe-area-inset-right));
+}
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 4rem 1rem 2.5rem;
+  position: relative;
+}
+
+.hero-eyebrow {
+  font-family: 'Literata', Georgia, serif;
+  font-size: 13px;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: .7;
+  margin-bottom: 1.25rem;
+}
+
+.hero-title {
+  font-family: 'Literata', Georgia, serif;
+  font-size: clamp(2.2rem, 6vw, 3.8rem);
+  font-weight: 700;
+  line-height: 1.1;
+  background: linear-gradient(135deg, #f0d080 0%, #c9a84c 40%, #e8c96a 70%, #a07830 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  filter: drop-shadow(0 0 40px rgba(201,168,76,0.35));
+  margin-bottom: .6rem;
+}
+
+.hero-subtitle {
+  font-family: 'Literata', Georgia, serif;
+  font-size: clamp(1rem, 2.5vw, 1.35rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--gold2);
+  opacity: .55;
+  letter-spacing: .12em;
+  margin-bottom: 1.75rem;
+}
+
+.hero-rule {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 500px;
+  margin: 0 auto 1.75rem;
+}
+.hero-rule::before,
+.hero-rule::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: .4;
+}
+.hero-rule span {
+  color: var(--gold);
+  font-size: 1.1rem;
+  opacity: .5;
+}
+
+.hero-desc {
+  font-style: italic;
+  color: var(--muted);
+  max-width: 520px;
+  margin: 0 auto 2.5rem;
+  font-size: 13px;
+  opacity: .8;
+}
+
+/* ── Search ── */
+.search-wrap {
+  max-width: 620px;
+  margin: 0 auto 3rem;
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1.1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gold);
+  opacity: .5;
+  font-size: 1rem;
+  pointer-events: none;
+  transition: opacity .2s;
+}
+
+#search {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 40px;
+  padding: .9rem 1.2rem .9rem 2.9rem;
+  min-height: 48px;
+  color: var(--text);
+  font-family: 'Literata', Georgia, serif;
+  font-size: 16px;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s, background .2s;
+  letter-spacing: .02em;
+}
+
+#search::placeholder { color: var(--muted); opacity: .6; }
+
+#search:focus {
+  border-color: rgba(201,168,76,0.6);
+  box-shadow: 0 0 0 3px rgba(201,168,76,0.08), 0 0 20px rgba(201,168,76,0.1);
+  background: rgba(255,255,255,0.06);
+}
+
+#search:focus + .search-icon { opacity: .9; }
+
+/* Dropdown results */
+#results {
+  position: absolute;
+  top: calc(100% + .5rem);
+  left: 0; right: 0;
+  background: #13121f;
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
+  z-index: 100;
+  display: none;
+  max-height: min(400px, 50vh);
+  overflow-y: auto;
+}
+
+#results::-webkit-scrollbar { width: 4px; }
+#results::-webkit-scrollbar-track { background: transparent; }
+#results::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.2); border-radius: 2px; }
+
+.result-section-header {
+  padding: .5rem 1.1rem .25rem;
+  font-family: 'Literata', Georgia, serif;
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  opacity: .6;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.result-section-header:first-child { border-top: none; }
+
+.result-item {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .75rem 1.1rem;
+  min-height: 48px;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--text);
+  transition: background .15s;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.result-item:last-child { border-bottom: none; }
+.result-item:hover, .result-item:focus { background: rgba(201,168,76,0.07); outline: none; }
+
+.ri-icon { font-size: 1rem; flex-shrink: 0; }
+.ri-name { font-size: 16px; flex: 1; }
+.ri-name mark { background: none; color: var(--gold2); font-style: normal; }
+.ri-meta { font-size: 13px; color: var(--muted); opacity: .7; white-space: nowrap; }
+.ri-rank {
+  font-size: 10px;
+  padding: .1rem .4rem;
+  border-radius: 10px;
+  font-family: 'Literata', Georgia, serif;
+  letter-spacing: .04em;
+  color: #fff;
+  opacity: .85;
+  white-space: nowrap;
+}
+
+.result-study-row {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .75rem 1.1rem;
+  min-height: 48px;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--text);
+  transition: background .15s;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.result-study-row:hover { background: rgba(201,168,76,0.07); }
+.rs-icon { font-size: 1.2rem; }
+.rs-name { font-size: 16px; flex: 1; }
+.rs-name mark { background: none; color: var(--gold2); font-style: normal; }
+.rs-count { font-size: 13px; color: var(--muted); opacity: .6; }
+
+.no-results {
+  padding: 1.25rem;
+  text-align: center;
+  color: var(--muted);
+  font-style: italic;
+  font-size: 13px;
+  opacity: .6;
+}
+
+/* ── Studies grid ── */
+.section-label {
+  font-family: 'Literata', Georgia, serif;
+  font-size: 10px;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: .45;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.studies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.study-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .5rem;
+  padding: 1.35rem 1.3rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--text);
+  position: relative;
+  overflow: hidden;
+  transition: transform .2s, border-color .2s, box-shadow .2s, background .2s;
+  cursor: pointer;
+}
+
+.study-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 30% 0%, var(--sc-glow) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity .3s;
+}
+
+.study-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--sc-color);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 20px var(--sc-glow);
+  background: rgba(255,255,255,0.05);
+}
+.study-card:hover::before { opacity: 1; }
+
+.sc-icon {
+  font-size: 1.8rem;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 0 8px var(--sc-color));
+  transition: transform .3s;
+}
+.study-card:hover .sc-icon { transform: scale(1.15); }
+
+.sc-name {
+  font-family: 'Literata', Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--sc-color);
+  position: relative;
+  z-index: 1;
+  letter-spacing: .02em;
+}
+
+.sc-desc {
+  font-size: 13px;
+  color: var(--muted);
+  opacity: .7;
+  line-height: 1.5;
+  position: relative;
+  z-index: 1;
+  font-style: italic;
+}
+
+.sc-count {
+  font-family: 'Literata', Georgia, serif;
+  font-size: 10px;
+  letter-spacing: .08em;
+  color: var(--sc-color);
+  opacity: .5;
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+}
+
+.sc-arrow {
+  position: absolute;
+  bottom: 1rem;
+  right: 1.1rem;
+  color: var(--sc-color);
+  opacity: 0;
+  font-size: .9rem;
+  transition: opacity .2s, transform .2s;
+  z-index: 1;
+}
+.study-card:hover .sc-arrow { opacity: .6; transform: translateX(3px); }
+
+/* ── Footer ── */
+footer {
+  text-align: center;
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--muted);
+  opacity: .35;
+  font-style: italic;
+}
+
+@media (max-width: 600px) {
+  .studies-grid { grid-template-columns: 1fr 1fr; }
+  .wrap { padding: 0 1rem 4rem; }
+  .hero { padding: 2.5rem .5rem 1.5rem; }
+  .search-wrap { margin-bottom: 2rem; }
+}
+@media (max-width: 380px) {
+  .studies-grid { grid-template-columns: 1fr; }
+  .hero-title { font-size: 1.8rem; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="hero-eyebrow">Player Codex</p>
+    <h1 class="hero-title">Realms of Legacy</h1>
+    <p class="hero-subtitle">Studies of Sorcery</p>
+    <div class="hero-rule"><span>✦</span></div>
+    <p class="hero-desc">Twelve paths of arcane mastery. Each Study grants dominion over a fundamental force — choose your discipline and bend reality to your will.</p>
+  </header>
+
+  <!-- Search -->
+  <div class="search-wrap">
+    <input type="text" id="search" placeholder="Search spells or studies…" autocomplete="off" spellcheck="false">
+    <span class="search-icon">⚲</span>
+    <div id="results"></div>
+  </div>
+
+  <p class="section-label">Choose your Study</p>
+
+  <!-- Studies grid -->
+  <div class="studies-grid" id="studies-grid"></div>
+
+  <footer>Realms of Legacy — Player Codex &mdash; Studies of Sorcery</footer>
+</div>
+
+<script>
+// ── Real viewport height (fixes iOS Safari 100vh bug) ───────────────────────
+function setVh() {
+  document.documentElement.style.setProperty('--vh', window.innerHeight * 0.01 + 'px');
+}
+setVh();
+window.addEventListener('resize', setVh, { passive: true });
+
+// ── Build study cards ────────────────────────────────────────────────────────
+const STUDIES = [
+  { name:"Aeromancy",    icon:"⚡", color:"#29b6f6", glow:"rgba(41,182,246,0.15)",   file:"aeromancy.html",    desc:"Air and lightning — speed, control, and devastating blasts." },
+  { name:"Blood",        icon:"🩸", color:"#e53935", glow:"rgba(229,57,53,0.15)",    file:"blood.html",        desc:"Manipulate body and mind through the blood that flows within." },
+  { name:"Contagion",    icon:"☣",  color:"#7cb342", glow:"rgba(124,179,66,0.15)",   file:"contagion.html",    desc:"Inflict devastating diseases and toxic conditions on foes." },
+  { name:"Cryomancy",    icon:"❄",  color:"#4fc3f7", glow:"rgba(79,195,247,0.15)",   file:"cryomancy.html",    desc:"Freeze, shatter, and encase your enemies in endless winter." },
+  { name:"Death",        icon:"☠",  color:"#9575cd", glow:"rgba(149,117,205,0.15)",  file:"death.html",        desc:"Raise the fallen and drain the living with death's power." },
+  { name:"Displacement", icon:"✦",  color:"#7c4dff", glow:"rgba(124,77,255,0.15)",   file:"displacement.html", desc:"Teleportation and spatial mastery to reposition and confound." },
+  { name:"Divinity",     icon:"✦",  color:"#fdd835", glow:"rgba(253,216,53,0.15)",   file:"divinity.html",     desc:"Call upon divine blessing to smite enemies and shield allies." },
+  { name:"Geomancy",     icon:"⛰",  color:"#a1887f", glow:"rgba(161,136,127,0.15)",  file:"geomancy.html",     desc:"Command earth and stone to crush, summon, and reshape terrain." },
+  { name:"Illusion",     icon:"◈",  color:"#e040fb", glow:"rgba(224,64,251,0.15)",   file:"illusion.html",     desc:"Bend light and perception to deceive, disguise, and vanish." },
+  { name:"Pyromancy",    icon:"🔥", color:"#ff5722", glow:"rgba(255,87,34,0.15)",    file:"pyromancy.html",    desc:"Overwhelming offense — the best defense is pure fire." },
+  { name:"Recovery",     icon:"✚",  color:"#43a047", glow:"rgba(67,160,71,0.15)",    file:"recovery.html",     desc:"Master medic and support: heal wounds and mend broken bodies." },
+  { name:"Shadows",      icon:"◼",  color:"#78909c", glow:"rgba(120,144,156,0.15)",  file:"shadows.html",      desc:"Bend dark energies to infiltrate and incapacitate the weak." },
+];
+
+const grid = document.getElementById('studies-grid');
+STUDIES.forEach(s => {
+  const a = document.createElement('a');
+  a.href = s.file;
+  a.className = 'study-card';
+  a.style.setProperty('--sc-color', s.color);
+  a.style.setProperty('--sc-glow', s.glow);
+  a.innerHTML = `
+    <span class="sc-icon">${s.icon}</span>
+    <span class="sc-name">${s.name}</span>
+    <span class="sc-desc">${s.desc}</span>
+    <span class="sc-count">12 Spells</span>
+    <span class="sc-arrow">→</span>
+  `;
+  grid.appendChild(a);
+});
+
+// ── Search setup ─────────────────────────────────────────────────────────────
+let spellIndex = [];
+fetch('spells_index.json')
+  .then(r => r.json())
+  .then(data => { spellIndex = data; });
+
+const searchEl   = document.getElementById('search');
+const resultsEl  = document.getElementById('results');
+const searchWrap = document.querySelector('.search-wrap');
+
+const RANK_COLORS = ["#9e9e9e","#4fc3f7","#81c784","#ffb74d","#f06292","#ce93d8"];
+
+function highlight(text, query) {
+  if (!query) return text;
+  const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+  return text.replace(re, '<mark>$1</mark>');
+}
+
+function openResults() {
+  resultsEl.style.display = 'block';
+  positionDropdown();
+}
+
+function closeResults() {
+  resultsEl.style.display = 'none';
+}
+
+function showResults(query) {
+  if (!query.trim()) { closeResults(); return; }
+  const q = query.toLowerCase().trim();
+
+  const studyMatches = STUDIES.filter(s => s.name.toLowerCase().includes(q));
+  const spellMatches = spellIndex.filter(s =>
+    s.name.toLowerCase().includes(q) || s.study.toLowerCase().includes(q)
+  ).slice(0, 12);
+
+  if (!studyMatches.length && !spellMatches.length) {
+    resultsEl.innerHTML = '<div class="no-results">No spells or studies found</div>';
+    openResults();
+    return;
+  }
+
+  let html = '';
+  if (studyMatches.length) {
+    html += '<div class="result-section-header">Studies</div>';
+    studyMatches.forEach(s => {
+      html += `<a class="result-study-row" href="${s.file}">
+        <span class="rs-icon">${s.icon}</span>
+        <span class="rs-name" style="color:${s.color}">${highlight(s.name, query)}</span>
+        <span class="rs-count">12 spells →</span>
+      </a>`;
+    });
+  }
+  if (spellMatches.length) {
+    html += '<div class="result-section-header">Spells</div>';
+    spellMatches.forEach(sp => {
+      const rc = RANK_COLORS[sp.rank] || RANK_COLORS[RANK_COLORS.length - 1];
+      html += `<a class="result-item" href="${sp.file}#${sp.slug}">
+        <span class="ri-icon">${sp.icon}</span>
+        <span class="ri-name">${highlight(sp.name, query)}</span>
+        <span class="ri-meta" style="color:${sp.color}">${sp.study}</span>
+        <span class="ri-rank" style="background:${rc}">Rank ${sp.rank}</span>
+      </a>`;
+    });
+  }
+
+  resultsEl.innerHTML = html;
+  openResults();
+}
+
+// ── Dropdown positioning — adapts around the virtual keyboard ────────────────
+function positionDropdown() {
+  if (!window.visualViewport) return;
+  const vv       = window.visualViewport;
+  const rect     = searchWrap.getBoundingClientRect();
+  const spaceBelow = vv.height - (rect.bottom - vv.offsetTop);
+  const spaceAbove = rect.top  - vv.offsetTop;
+  // Cap height to available space
+  const maxH = Math.max(spaceBelow - 16, 120);
+  resultsEl.style.maxHeight = maxH + 'px';
+  // Flip above search bar if more space is available there
+  if (spaceBelow < 200 && spaceAbove > spaceBelow) {
+    resultsEl.style.top    = 'auto';
+    resultsEl.style.bottom = 'calc(100% + .5rem)';
+  } else {
+    resultsEl.style.top    = 'calc(100% + .5rem)';
+    resultsEl.style.bottom = 'auto';
+  }
+}
+
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', () => {
+    setVh();
+    if (resultsEl.style.display === 'block') positionDropdown();
+  }, { passive: true });
+  window.visualViewport.addEventListener('scroll', () => {
+    if (resultsEl.style.display === 'block') positionDropdown();
+  }, { passive: true });
+}
+
+// ── Focus: scroll search into view after keyboard opens ──────────────────────
+searchEl.addEventListener('focus', () => {
+  if (searchEl.value) showResults(searchEl.value);
+  setTimeout(() => {
+    searchWrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    positionDropdown();
+  }, 320);
+});
+
+searchEl.addEventListener('input', e => showResults(e.target.value));
+
+// ── Keyboard navigation ──────────────────────────────────────────────────────
+searchEl.addEventListener('keydown', e => {
+  const items = resultsEl.querySelectorAll('a');
+  if (!items.length) return;
+  if (e.key === 'ArrowDown') { e.preventDefault(); items[0].focus(); }
+  if (e.key === 'Escape')    { closeResults(); searchEl.blur(); }
+  if (e.key === 'Enter' && items.length) { items[0].click(); }
+});
+
+resultsEl.addEventListener('keydown', e => {
+  const items = [...resultsEl.querySelectorAll('a')];
+  const idx   = items.indexOf(document.activeElement);
+  if (e.key === 'ArrowDown') { e.preventDefault(); items[Math.min(idx + 1, items.length - 1)].focus(); }
+  if (e.key === 'ArrowUp')   { e.preventDefault(); idx > 0 ? items[idx - 1].focus() : searchEl.focus(); }
+  if (e.key === 'Escape')    { closeResults(); searchEl.focus(); }
+});
+
+// ── Dismiss on outside touch (iOS) or click (desktop) ────────────────────────
+document.addEventListener('touchstart', e => {
+  if (!e.target.closest('.search-wrap')) closeResults();
+}, { passive: true });
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.search-wrap')) closeResults();
+});
+
+// ── Dismiss on scroll (user flicks past the search bar) ──────────────────────
+window.addEventListener('scroll', () => {
+  if (document.activeElement !== searchEl) closeResults();
+}, { passive: true });
+</script>
+</body>
+</html>
